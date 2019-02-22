@@ -7,6 +7,12 @@ declare contact message
     int, int, int, str <=> message_type_id, player_id, clue_id, associated word
 '''
 
+class DumbyClass():
+    def __init__(self):
+        self.a='fart'
+        self.b=4
+        self.c={'a':2,'b':'largesse'}
+
 def decoder(message_byte_string):
     message_type = struct.unpack_from('i', message_byte_string, 0)
     output_message = [message_type[0]]
@@ -17,7 +23,7 @@ def decoder(message_byte_string):
 def encoder(message_tuple):
     format_tuple = msg_format_dict[message_tuple[0]]
     format_string = ''
-    print [type(ele) for ele in message_tuple]
+    print( [type(ele) for ele in message_tuple])
     message_list =[]
     for index in range(len(format_tuple)):
         element = format_tuple[index]
@@ -56,4 +62,7 @@ if __name__ == '__main__':
     print(jdecoder(result1))
     result2 = jencoder((2,3,1, 'fart noises'))
     print(jdecoder(result2))
-
+    test_obj = DumbyClass()
+    result3 = jencoder(test_obj)
+    print(result3)
+    print(jdecoder(result3))

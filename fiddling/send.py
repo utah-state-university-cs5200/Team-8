@@ -1,16 +1,20 @@
-import encoding_approaches
-import socket
+from network_io import NetworkIO
+from message import Message
 from time import sleep
 
-udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+interface = NetworkIO(('127.0.0.1', 12002))
 
 message_queue = [
-    (1,1,'bean noises', 'fart'),
-    (2,3,1, 'fart noises')
+    [1,1,'bean noises', 'fart'],
+    [2,3,1, 'fart noises']
 ]
+destination = ('127.0.0.1', 12001)
 for message in message_queue:
-    udp_socket.sendto(
-        encoding_approaches.jencoder(message),
-        ('127.0.0.1', 12001)
+    interface.outbox.append(
+        Message(1,message,destination=destination)
         )
+
+while not len(interface.outbox)==0:
+    print('sent')
+    interface.transmit()
     sleep(.5)

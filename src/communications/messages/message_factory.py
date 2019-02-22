@@ -57,6 +57,7 @@ class MessageFactory:
         :param args: Arguments for message creation, starting with message_id
         :param kwargs:
         :return: Message object
+        :raises MessageException: if message cannot be built properly
         """
         if len(args) < 1:
             raise MessageException("Error: MessageFactory not enough arguments for message creation")

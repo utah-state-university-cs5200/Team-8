@@ -9,3 +9,6 @@ class Message:
         :param kwargs:
         """
         self.id = args[0]
+
+    def getAttributes(self):
+        return vars(self)

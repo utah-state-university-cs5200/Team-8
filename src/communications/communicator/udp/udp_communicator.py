@@ -11,3 +11,5 @@ class UDPCommunicator(Communicator):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sender = UDPSender(communicator=self, socket=self.socket)
         self.receiver = UDPReceiver(communicator=self, socket=self.socket)
+        self.sender.run()
+        self.receiver.run()

@@ -1,31 +1,42 @@
-import logging
 import time
 from queue import Queue, Empty
 from threading import Thread
 
 
-class UDPSender(Thread):
+# TODO: temporary, clean this up later
+SLEEP_TIME = 50
+
+# TODO: create encode(message) method
+
+
+class Sender(Thread):
+    """
+    Parent sender class to be specialized
+
+    :note: Specializations must implement _sendMessage()
+    """
     def __init__(self, group=None, target=None, name=None, *args, **kwargs):
         super().__init__(group, target, name, args, kwargs)
-        self.client = kwargs['client']
+        self.communicator = kwargs['communicator']
         self.socket = kwargs['socket']
         self.message_queue = Queue()
 
     def run(self):
-        while self.client.alive:
+        while self.communicator.isActive():
             try:
                 message = self.message_queue.get(block=False)
                 self._sendMessage(message)
             except Empty:
                 time.sleep(SLEEP_TIME)
 
-    def setSocket(self, socket):
-        self.socket = socket
-
     def enqueueMessage(self, message):
-        logging.debug("Sender enqueueing message with id: {}".format(message.id))
         self.message_queue.put(message)
 
     def _sendMessage(self, message):
-        logging.info("Sender sending bytes: {}".format(message.encode()))
-        self.socket.send(message.encode())
+        """
+        Send a message through the socket
+
+        :param message: Message object to be encoded and sent
+        :return:
+        """
+        raise NotImplementedError

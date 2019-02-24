@@ -1,9 +1,10 @@
-from threading import Thread
 
 
 class Communicator:
-    def __init__(self, group=None, target=None, name=None, *args, **kwargs):
-        super().__init__(group, target, name, args, kwargs)
+    """
+    Parent communicator class to be specialized
+    """
+    def __init__(self, *args, **kwargs):
         self.client = kwargs['client']
         self.socket = None
         self.sender = None

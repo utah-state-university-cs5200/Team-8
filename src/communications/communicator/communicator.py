@@ -4,11 +4,24 @@ class Communicator:
     """
     Parent communicator class to be specialized
     """
-    def __init__(self, *args, **kwargs):
-        self.client = kwargs['client']
+    def __init__(self, client, address=None):
+        """
+        Constructor
+
+        :param client: Client program
+        :param address: IP address for socket
+        """
+        self.client = client
+        self.address = self._initAddress(address)
         self.socket = None
         self.sender = None
         self.receiver = None
+
+    def _initAddress(self, address):
+        if address is None:
+            pass # TODO: Make an address automatigically if it isn't provided
+        else:
+            return address
 
     def isActive(self):
         """

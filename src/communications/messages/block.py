@@ -6,8 +6,8 @@ class Block(Request):
         """
         Block message
 
-        :param args: [message_type_id, word]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id, word}
         """
         super().__init__(*args, **kwargs)
-        self.word = args[1]
+        self.word = kwargs["word"]

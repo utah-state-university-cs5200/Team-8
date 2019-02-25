@@ -6,8 +6,8 @@ class GameList(Reply):
         """
         Game List message
 
-        :param args: [message_type_id, request_id, status, game_list]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id, request_id, message_status, game_list}
         """
         super().__init__(*args, **kwargs)
-        self.game_list = args[3]
+        self.game_list = kwargs["game_list"]

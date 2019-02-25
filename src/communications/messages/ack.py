@@ -6,7 +6,7 @@ class Ack(Reply):
         """
         Acknowledge message
 
-        :param args: [message_type_id, request_id, status]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id, request_id, status}
         """
         super().__init__(*args, **kwargs)

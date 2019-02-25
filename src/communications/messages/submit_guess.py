@@ -6,10 +6,10 @@ class SubmitGuess(Request):
         """
         Submit Guess message
 
-        :param args: [message_type_id, player_id, word, clue]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id, player_id, word, clue}
         """
         super().__init__(*args, **kwargs)
-        self.player_id = args[1]
-        self.word = args[2]
-        self.clue = args[3]
+        self.player_id = kwargs["player_id"]
+        self.word = kwargs["word"]
+        self.clue = kwargs["clue"]

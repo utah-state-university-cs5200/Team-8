@@ -6,9 +6,9 @@ class AddPlayer(Request):
         """
         Add Player message
 
-        :param args: [message_type_id, player_alias, player_id]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id, player_alias, player_id}
         """
         super().__init__(*args, **kwargs)
-        self.player_alias = args[1]
-        self.player_id = args[2]
+        self.player_alias = kwargs["player_alias"]
+        self.player_id = kwargs["player_id"]

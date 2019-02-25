@@ -6,9 +6,9 @@ class SetSecretWord(Request):
         """
         Set Secret Word message
 
-        :param args: [message_type_id, player_id, secret_word]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id, player_id, secret_word}
         """
         super().__init__(*args, **kwargs)
-        self.player_id = args[1]
-        self.secret_word = args[2]
+        self.player_id = kwargs["player_id"]
+        self.secret_word = kwargs["secret_word"]

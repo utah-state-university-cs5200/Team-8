@@ -61,5 +61,5 @@ class MessageFactory:
         """
         if len(args) < 1:
             raise MessageException("Error: MessageFactory not enough arguments for message creation")
-        message = MessageFactory.MESSAGE_TYPE_ID_MAP[args[0]](*args, **kwargs)
+        message = MessageFactory.MESSAGE_TYPE_ID_MAP[kwargs["message_type_id"]](*args, **kwargs)
         return message

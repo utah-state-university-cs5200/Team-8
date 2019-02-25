@@ -6,8 +6,8 @@ class Error(Reply):
         """
         Error message
 
-        :param args: [message_type_id, request_id, status, error_string]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id, request_id, message_status, error_string}
         """
         super().__init__(*args, **kwargs)
-        self.error_string = args[3]
+        self.error_string = kwargs["error_string"]

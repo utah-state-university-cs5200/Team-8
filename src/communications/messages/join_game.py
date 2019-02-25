@@ -6,10 +6,10 @@ class JoinGame(Request):
         """
         Join Game message
 
-        :param args: [message_type_id, game_id, player_id, player_alias]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id, game_id, player_id, player_alias}
         """
         super().__init__(*args, **kwargs)
-        self.game_id = args[1]
-        self.player_id = args[2]
-        self.player_alias = args[3]
+        self.game_id = kwargs["game_id"]
+        self.player_id = kwargs["player_id"]
+        self.player_alias = kwargs["player_alias"]

@@ -6,8 +6,8 @@ class Hello(Request):
         """
         Hello message
 
-        :param args: [message_type_id, player_alias]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id, player_alias}
         """
         super().__init__(*args, **kwargs)
-        self.player_alias = args[1]
+        self.player_alias = kwargs["player_alias"]

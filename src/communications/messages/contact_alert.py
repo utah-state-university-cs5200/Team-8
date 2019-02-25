@@ -6,8 +6,8 @@ class ContactAlert(Request):
         """
         Contact Alert message
 
-        :param args: [message_type_id, clue_id]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id, clue_id}
         """
         super().__init__(*args, **kwargs)
-        self.clue_id = args[1]
+        self.clue_id = kwargs["clue_id"]

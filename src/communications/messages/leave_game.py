@@ -6,8 +6,8 @@ class LeaveGame(Request):
         """
         Leave Game message
 
-        :param args: [message_type_id, player_id]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id, player_id}
         """
         super().__init__(*args, **kwargs)
-        self.player_id = args[1]
+        self.player_id = kwargs["player_id"]

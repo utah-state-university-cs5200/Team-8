@@ -6,8 +6,8 @@ class TerminateGame(Request):
         """
         Terminate Game message
 
-        :param args: [message_type_id, game_id]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id, game_id}
         """
         super().__init__(*args, **kwargs)
-        self.game_id = args[1]
+        self.game_id = kwargs["game_id"]

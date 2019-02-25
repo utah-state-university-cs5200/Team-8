@@ -6,7 +6,7 @@ class GameState(Reply):
         """
         Game State message
 
-        :param args: [message_type_id, request_id, status]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id, request_id, message_status}
         """
         super().__init__(*args, **kwargs)

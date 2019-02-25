@@ -5,10 +5,10 @@ class Message:
         """
         Parent message class for both request and reply messages
 
-        :param args: [message_type_id]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id}
         """
-        self.id = args[0]
+        self.message_type_id = kwargs["message_type_id"]
 
     def getAttributes(self):
         return vars(self)

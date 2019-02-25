@@ -6,8 +6,8 @@ class AssignID(Reply):
         """
         Assign ID message
 
-        :param args: [message_type_id, request_id, status, player_id]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id, request_id, message_status, player_id}
         """
         super().__init__(*args, **kwargs)
-        self.player_id = args[3]
+        self.player_id = kwargs["player_id"]

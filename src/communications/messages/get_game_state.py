@@ -6,7 +6,7 @@ class GetGameState(Request):
         """
         Get Game State message
 
-        :param args: [message_type_id]
-        :param kwargs:
+        :param args:
+        :param kwargs: {message_type_id}
         """
         super().__init__(*args, **kwargs)

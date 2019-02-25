@@ -1,4 +1,5 @@
 from src.communications.communicator.receiver import Receiver
+from src.communications.encode_decode.decode import decode
 
 
 class UDPReceiver(Receiver):

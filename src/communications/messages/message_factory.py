@@ -59,7 +59,7 @@ class MessageFactory:
         :return: Message object
         :raises MessageException: if message cannot be built properly
         """
-        if len(args) < 1:
+        if len(kwargs) < 1:
             raise MessageException("Error: MessageFactory not enough arguments for message creation")
         message = MessageFactory.MESSAGE_TYPE_ID_MAP[kwargs["message_type_id"]](*args, **kwargs)
         return message

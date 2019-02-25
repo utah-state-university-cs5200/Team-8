@@ -48,3 +48,11 @@ class Communicator:
         :return:
         """
         self.client.enqueueTask(task)
+
+    def cleanup(self):
+        """
+        Cleanup resources such as sockets when communicator is done
+
+        :return:
+        """
+        self.socket.close()

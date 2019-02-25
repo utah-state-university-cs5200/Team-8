@@ -30,6 +30,7 @@ class Receiver(Thread):
             except DecodeError:
                 # TODO: may want to log whenever this happens
                 pass
+        self.communicator.cleanup()
 
     def _receiveMessage(self):
         """

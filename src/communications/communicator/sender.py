@@ -28,6 +28,7 @@ class Sender(Thread):
                 self._sendMessage(message)
             except Empty:
                 time.sleep(SLEEP_TIME)
+        self.communicator.cleanup()
 
     def enqueueMessage(self, message):
         self.message_queue.put(message)

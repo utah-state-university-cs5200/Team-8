@@ -9,6 +9,7 @@ class Server(Thread):
         self.ID = self._initID()
         self.taskQueue = queue.Queue()
         self.message = None
+        self.type = "Server"
 
     def _initID(self):
         return uuid.uuid1()
@@ -22,5 +23,6 @@ class Server(Thread):
     def run(self):
         while self.alive:
             if not self.taskQueue.empty():
+                print("Message in Queue.")
                 self.message = self.taskQueue.get()
                 self.printMsg()

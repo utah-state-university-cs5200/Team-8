@@ -4,5 +4,5 @@ from src.communications.encode_decode.decode import decode
 
 class UDPReceiver(Receiver):
     def _receiveMessage(self):
-        buffer = self.socket.recv(1024)
+        buffer = self.socket.recv(4096)
         return decode(buffer)

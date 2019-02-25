@@ -5,6 +5,6 @@ from src.communications.messages.message_factory import MessageFactory
 
 new_client = Client()
 test_comms = UDPCommunicator(new_client, ("127.0.0.1", 12001))
-
-test_msg = MessageFactory.build({"message_type_id": 14, "player_alias": "David"})
+test_msg = MessageFactory.build(message_type_id=14, player_alias="David")
 test_comms.sendMessage(test_msg)
+test_comms.sender.run()

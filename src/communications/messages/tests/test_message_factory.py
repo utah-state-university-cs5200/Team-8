@@ -1,4 +1,5 @@
 import unittest
+import hypothesis
 
 from src.communications.messages.constants import MESSAGE_ID_HELLO, MESSAGE_ID_SUBMIT_GUESS, MESSAGE_ID_ASSIGN_ID, \
     MESSAGE_STATUS_SUCCESS

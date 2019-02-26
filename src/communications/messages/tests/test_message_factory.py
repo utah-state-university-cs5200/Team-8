@@ -41,3 +41,6 @@ class TestMessageFactory(unittest.TestCase):
         self.assertRaises(MessageException, MessageFactory.build, message_type_id=MESSAGE_ID_HELLO)
 
         self.assertRaises(MessageException, MessageFactory.build, message_type_id=MESSAGE_ID_SUBMIT_GUESS, player_id=9, clue="bar")
+
+if __name__ == "__main__":
+    unittest.main()

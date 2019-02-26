@@ -1,3 +1,4 @@
+from src.communications.communicator.envelope import Envelope
 
 
 class Communicator:
@@ -32,14 +33,16 @@ class Communicator:
         """
         return self.client.alive
 
-    def sendMessage(self, message):
+    def sendMessage(self, message, address):
         """
         Forward a message to the sender's message queue
 
         :param message: Message to be sent over the socket
+        :param address: Address tuple (IP, PORT)
         :return:
         """
-        self.sender.enqueueMessage(message)
+
+        self.sender.enqueueMessage(Envelope(message, address))
 
     def enqueueTask(self, task):
         """

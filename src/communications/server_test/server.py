@@ -10,7 +10,7 @@ class Server(Thread):
         self.ID = self._initID()
         self.taskQueue = queue.Queue()
         self.sendQueue = queue.Queue()
-        self.message = None
+        self.envelope = None
         self.type = "Server"
 
     def _initID(self):
@@ -20,12 +20,12 @@ class Server(Thread):
         self.taskQueue.put(task)
 
     def printMsg(self):
-        print(self.message.__dict__)
+        print(self.envelope.message.__dict__)
 
     def run(self):
         while self.alive:
             if not self.taskQueue.empty():
                 print("Message in Queue.")
-                self.message = self.taskQueue.get()
+                self.envelope = self.taskQueue.get()
                 self.printMsg()
 

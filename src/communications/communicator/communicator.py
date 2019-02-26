@@ -16,6 +16,7 @@ class Communicator:
         self.socket = None
         self.sender = None
         self.receiver = None
+        self.returnaddr = None
 
     def _initAddress(self, address):
         if address is None:

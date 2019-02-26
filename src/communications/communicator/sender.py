@@ -27,7 +27,7 @@ class Sender(Thread):
                 message = self.message_queue.get(block=False)
                 self._sendMessage(message)
             except Empty:
-                time.sleep(SLEEP_TIME)
+                pass # time.sleep(SLEEP_TIME)   # doesn't continue loop when ran?
 
     def enqueueMessage(self, message):
         self.message_queue.put(message)

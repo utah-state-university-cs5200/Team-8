@@ -23,10 +23,12 @@ class Receiver(Thread):
     def run(self):
         while self.communicator.isActive():
             try:
-                message = self._receiveMessage()
+                message, addr = self._receiveMessage()
+                self.communicator.returnaddr = addr
+                print(addr)
                 self.communicator.enqueueTask(message)
             except socket.error:
-                time.sleep(SLEEP_TIME)
+                pass # time.sleep(SLEEP_TIME)   # doesn't continue loop when ran?
             #except DecodeError:
                 # TODO: may want to log whenever this happens
                # pass

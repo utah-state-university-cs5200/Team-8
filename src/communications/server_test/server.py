@@ -5,9 +5,11 @@ from threading import Thread
 
 class Server(Thread):
     def __init__(self):
+        Thread.__init__(self)
         self.alive = True
         self.ID = self._initID()
         self.taskQueue = queue.Queue()
+        self.sendQueue = queue.Queue()
         self.message = None
         self.type = "Server"
 
@@ -26,3 +28,4 @@ class Server(Thread):
                 print("Message in Queue.")
                 self.message = self.taskQueue.get()
                 self.printMsg()
+

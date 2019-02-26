@@ -6,11 +6,14 @@ set up virtual environment for python with
 -
 virtualenv --python=python3 venv
 -
-to activate
+to activate, from root directory
 -
 source venv/bin/activate
 -
 to deactivate virtual environment
 -
 deactivate
-
+-
+to run tests, from root directory
+-
+python -m unittest discover src

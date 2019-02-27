@@ -1,4 +1,4 @@
-from src.communications.communicator.constants import DEFAULT_ADDRESS
+from src.communications.communicator.constants import DEFAULT_SERVER_ADDRESS
 
 
 class Communicator:
@@ -20,7 +20,7 @@ class Communicator:
 
     def _initAddress(self, address):
         if address is None:
-            return DEFAULT_ADDRESS
+            return DEFAULT_SERVER_ADDRESS
         else:
             return address
 

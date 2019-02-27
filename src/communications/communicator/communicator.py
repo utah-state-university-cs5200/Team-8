@@ -1,3 +1,4 @@
+from src.communications.communicator.constants import DEFAULT_ADDRESS
 
 
 class Communicator:
@@ -19,7 +20,7 @@ class Communicator:
 
     def _initAddress(self, address):
         if address is None:
-            pass # TODO: Make an address automatigically if it isn't provided
+            return DEFAULT_ADDRESS
         else:
             return address
 

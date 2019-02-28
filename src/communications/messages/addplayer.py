@@ -2,6 +2,8 @@ from src.communications.messages.request import Request
 
 
 class AddPlayer(Request):
+    type_key = Request.freshTypeDict()
+
     def __init__(self, *args, **kwargs):
         """
         Add Player message

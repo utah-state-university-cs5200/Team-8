@@ -2,6 +2,7 @@ from src.communications.messages.reply import Reply
 
 
 class Ack(Reply):
+    type_key = Reply.freshTypeDict()
     def __init__(self, *args, **kwargs):
         """
         Acknowledge message

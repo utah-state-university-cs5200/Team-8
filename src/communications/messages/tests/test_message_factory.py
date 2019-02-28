@@ -49,9 +49,9 @@ class TestMessageFactory(unittest.TestCase):
             if 'SUCCESS' in term:
                 continue
             id_val = getattr(constants, term)
-            message = MessageFactory.MESSAGE_TYPE_ID_MAP[id_val]
-            print(message)
-            print(dir(message))
+            message_class = MessageFactory.MESSAGE_TYPE_ID_MAP[id_val]
+            print(message_class)
+            print(message_class.type_key.keys())
         self.assertEqual(0,1)
 
 if __name__ == "__main__":

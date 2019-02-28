@@ -2,6 +2,11 @@ from src.communications.messages.request import Request
 
 
 class Contact(Request):
+    type_key = Request.freshTypeDict()
+    type_key['player_id'] = int
+    type_key['clue_id'] = int
+    type_key['guess'] = str
+
     def __init__(self, *args, **kwargs):
         """
         Contact message

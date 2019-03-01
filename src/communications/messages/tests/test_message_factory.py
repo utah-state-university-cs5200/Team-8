@@ -52,7 +52,6 @@ class TestMessageFactory(unittest.TestCase):
     @hypothesis.given(hypothesis.strategies.data())
     @hypothesis.settings(deadline=None)
     def testReversibilityOfEncoding(self, data):
-    # def testReversibilityOfEncoding(self):
         strat_map = {
             int:hypothesis.strategies.integers(),
             str:hypothesis.strategies.characters(),
@@ -65,22 +64,16 @@ class TestMessageFactory(unittest.TestCase):
             message_class = MessageFactory.MESSAGE_TYPE_ID_MAP[id_val]
             types = message_class.freshTypeDict()
             for argument in types.keys():
-                # print(repr(key))
-                # print(repr(types[key]))
-                # print(repr(strat_map[types[key]]))
-                # print(key, types[key], strat_map[types[key]])
                 types[argument] = strat_map[types[argument]]
             prop = data.draw(
                 hypothesis.strategies.fixed_dictionaries(types)
                 )
             prop['message_type_id'] = id_val
-            # print(prop)
             message_instace = MessageFactory.build(**prop)
             byte_string = message_instace.encode()
             result_message = MessageFactory.fromByteString(byte_string)
             byte_string2 = result_message.encode()
             self.assertEqual(byte_string, byte_string2)
-        # self.assertEqual(0,1)
 
 if __name__ == "__main__":
     unittest.main()

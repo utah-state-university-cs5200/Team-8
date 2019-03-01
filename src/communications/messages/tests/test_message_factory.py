@@ -69,6 +69,7 @@ class TestMessageFactory(unittest.TestCase):
                 hypothesis.strategies.fixed_dictionaries(types)
                 )
             prop['message_type_id'] = id_val
+            # print(prop)
             message_instace = MessageFactory.build(**prop)
             byte_string = message_instace.encode()
             result_message = MessageFactory.fromByteString(byte_string)

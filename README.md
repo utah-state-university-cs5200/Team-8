@@ -14,6 +14,10 @@ to deactivate virtual environment
 -
 deactivate
 -
+to install requirements list
+-
+pip install -r requirements.txt
+-
 to run tests, from root directory
 -
 python -m unittest discover src

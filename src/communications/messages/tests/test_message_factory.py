@@ -51,7 +51,12 @@ class TestMessageFactory(unittest.TestCase):
             id_val = getattr(constants, term)
             message_class = MessageFactory.MESSAGE_TYPE_ID_MAP[id_val]
             print(message_class)
-            print(message_class.type_key.keys())
+            prop = #hypothesis magic using message_class.type_key
+            message_instace = MessageFactory.build(prop)
+            byte_string = message_instace.encode()
+            result_message = MessageFactory.fromByteString(byte_string)
+            byte_string2 = result_message.encode()
+            self.assertEqual(byte_string, byte_string2)
         self.assertEqual(0,1)
 
 if __name__ == "__main__":

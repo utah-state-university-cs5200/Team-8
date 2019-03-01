@@ -1,4 +1,5 @@
 from copy import copy
+from src.communications.messages.encoder_decoder import encoding
 
 class Message:
     type_key = {'message_type_id': int}
@@ -17,3 +18,7 @@ class Message:
     @classmethod
     def freshTypeDict(self):
         return copy(self.type_key)
+
+    def encode(self):
+        print('trying to encode')
+        return encoding(vars(self))

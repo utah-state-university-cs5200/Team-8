@@ -9,6 +9,11 @@ from src.communications.messages.message_factory import MessageFactory
 from src.communications.messages import constants
 
 class TestMessageFactory(unittest.TestCase):
+    @hypothesis.strategies.composite
+    def arbitrary_message_dict(draw):
+        output = {}
+        return output
+        #maybe just use fixed dictionary strategy?
     def testBuildMessageSuccessful(self):
         """
         Test that a valid message is built as expected
@@ -43,19 +48,49 @@ class TestMessageFactory(unittest.TestCase):
 
         self.assertRaises(MessageException, MessageFactory.build, message_type_id=MESSAGE_ID_SUBMIT_GUESS, player_id=9, clue="bar")
 
-    def testReversibilityOfEncoding(self):
+
+    @hypothesis.given(hypothesis.strategies.data())
+    def testReversibilityOfEncoding(self, data):
+    # def testReversibilityOfEncoding(self):
+        strat_map = {
+            int:hypothesis.strategies.integers(),
+            str:hypothesis.strategies.characters(),
+            }
         vals = [item for item in dir(constants) if not item.startswith("__")]
         for term in vals:
             if 'SUCCESS' in term:
                 continue
             id_val = getattr(constants, term)
             message_class = MessageFactory.MESSAGE_TYPE_ID_MAP[id_val]
-            print(message_class)
-            prop = #hypothesis magic using message_class.type_key
-            message_instace = MessageFactory.build(prop)
+            print(message_class,'current class')
+            types = message_class.type_key
+            print(types.keys(), 'needs types')
+            for argument in types.keys():
+                # print(repr(key))
+                # print(repr(types[key]))
+                # print(repr(strat_map[types[key]]))
+                # print(key, types[key], strat_map[types[key]])
+                types[argument] = strat_map[types[argument]]
+            print(types, 'making prop')
+            # prop = hypothesis.strategies.fixed_dictionaries(types).example()
+            try:
+                prop = data.draw(
+                    hypothesis.strategies.fixed_dictionaries(types)
+                    )
+            except:
+                print('prop failed')
+            prop['message_type_id'] = id_val
+            print(prop, 'trying to make instance')
+            try:
+                message_instace = MessageFactory.build(**prop)
+            except:
+                print('instance failed')
+            print('made object with prop')
             byte_string = message_instace.encode()
+            print(byte_string)
             result_message = MessageFactory.fromByteString(byte_string)
             byte_string2 = result_message.encode()
+            print(byte_string2)
             self.assertEqual(byte_string, byte_string2)
         self.assertEqual(0,1)
 

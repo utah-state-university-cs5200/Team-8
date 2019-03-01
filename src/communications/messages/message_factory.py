@@ -22,7 +22,7 @@ from src.communications.messages.set_secret_word import SetSecretWord
 from src.communications.messages.submit_guess import SubmitGuess
 from src.communications.messages.terminate_game import TerminateGame
 from src.communications.messages.update_clients import UpdateClients
-
+from src.communications.messages.encoder_decoder import decoding
 
 class MessageFactory:
     MESSAGE_TYPE_ID_MAP = {
@@ -47,7 +47,7 @@ class MessageFactory:
         MESSAGE_ID_SET_SECRET_WORD: SetSecretWord,
         MESSAGE_ID_SUBMIT_GUESS: SubmitGuess,
         MESSAGE_ID_TERMINATE_GAME: TerminateGame,
-        MESSAGE_ID_UPDATE_CLIENTS: UpdateClients
+        MESSAGE_ID_UPDATE_CLIENTS: UpdateClients,
     }
 
     @staticmethod
@@ -59,10 +59,17 @@ class MessageFactory:
         :return: Message object
         :raises MessageException: if message cannot be built properly
         """
+        print(kwargs, 'starting generation')
         if len(kwargs) < 1:
             raise MessageException("Error: MessageFactory not enough arguments for message creation")
         try:
             message = MessageFactory.MESSAGE_TYPE_ID_MAP[kwargs["message_type_id"]](*args, **kwargs)
         except KeyError:
             raise MessageException("Error: MessageFactory missing a required argument for message creation")
+        print('message success', vars(message))
         return message
+
+    @staticmethod
+    def fromByteString(byte_string):
+        unpacked_dict = decoding(byte_string)
+        return self.build(**unpacked_dict)

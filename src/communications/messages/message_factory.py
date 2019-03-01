@@ -59,17 +59,15 @@ class MessageFactory:
         :return: Message object
         :raises MessageException: if message cannot be built properly
         """
-        print(kwargs, 'starting generation')
         if len(kwargs) < 1:
             raise MessageException("Error: MessageFactory not enough arguments for message creation")
         try:
             message = MessageFactory.MESSAGE_TYPE_ID_MAP[kwargs["message_type_id"]](*args, **kwargs)
         except KeyError:
             raise MessageException("Error: MessageFactory missing a required argument for message creation")
-        print('message success', vars(message))
         return message
 
     @staticmethod
     def fromByteString(byte_string):
         unpacked_dict = decoding(byte_string)
-        return self.build(**unpacked_dict)
+        return MessageFactory.build(**unpacked_dict)

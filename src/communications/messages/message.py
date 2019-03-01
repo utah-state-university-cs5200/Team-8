@@ -20,5 +20,4 @@ class Message:
         return copy(self.type_key)
 
     def encode(self):
-        print('trying to encode')
         return encoding(vars(self))

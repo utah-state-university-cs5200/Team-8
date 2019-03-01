@@ -62,37 +62,24 @@ class TestMessageFactory(unittest.TestCase):
                 continue
             id_val = getattr(constants, term)
             message_class = MessageFactory.MESSAGE_TYPE_ID_MAP[id_val]
-            print(message_class,'current class')
-            types = message_class.type_key
-            print(types.keys(), 'needs types')
+            types = message_class.freshTypeDict()
             for argument in types.keys():
                 # print(repr(key))
                 # print(repr(types[key]))
                 # print(repr(strat_map[types[key]]))
                 # print(key, types[key], strat_map[types[key]])
                 types[argument] = strat_map[types[argument]]
-            print(types, 'making prop')
-            # prop = hypothesis.strategies.fixed_dictionaries(types).example()
-            try:
-                prop = data.draw(
-                    hypothesis.strategies.fixed_dictionaries(types)
-                    )
-            except:
-                print('prop failed')
+            prop = data.draw(
+                hypothesis.strategies.fixed_dictionaries(types)
+                )
             prop['message_type_id'] = id_val
-            print(prop, 'trying to make instance')
-            try:
-                message_instace = MessageFactory.build(**prop)
-            except:
-                print('instance failed')
-            print('made object with prop')
+            print(prop)
+            message_instace = MessageFactory.build(**prop)
             byte_string = message_instace.encode()
-            print(byte_string)
             result_message = MessageFactory.fromByteString(byte_string)
             byte_string2 = result_message.encode()
-            print(byte_string2)
             self.assertEqual(byte_string, byte_string2)
-        self.assertEqual(0,1)
+        # self.assertEqual(0,1)
 
 if __name__ == "__main__":
     unittest.main()

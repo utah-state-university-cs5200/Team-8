@@ -5,24 +5,28 @@ class Communicator:
     """
     Parent communicator class to be specialized
     """
-    def __init__(self, client, address=None):
+    def __init__(self, client, address=None, sock=None):
         """
         Constructor
 
         :param client: Client program
         :param address: IP address for socket
+        :param sock: Socket object if you want to pass in an existing socket
         """
         self.client = client
-        self.address = self._initAddress(address)
-        self.socket = None
+        self._initAddress(address)
+        self._initSocket(sock)
         self.sender = None
         self.receiver = None
 
     def _initAddress(self, address):
         if address is None:
-            return DEFAULT_SERVER_ADDRESS
+            self.address = DEFAULT_SERVER_ADDRESS
         else:
-            return address
+            self.address = address
+
+    def _initSocket(self, sock):
+        self.sock = sock
 
     def isActive(self):
         """
@@ -56,4 +60,4 @@ class Communicator:
 
         :return:
         """
-        self.socket.close()
+        self.sock.close()

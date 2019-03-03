@@ -6,11 +6,17 @@ from src.communications.communicator.tcp.tcp_receiver import TCPReceiver
 
 
 class TCPCommunicator(Communicator):
-    def __init__(self, client, address=None):
-        super().__init__(client, address)
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.connect(self.address)
-        self.sender = TCPSender(communicator=self, socket=self.socket)
-        self.receiver = TCPReceiver(communicator=self, socket=self.socket)
+    def __init__(self, client, address=None, sock=None):
+        super().__init__(client, address, sock)
+        self._initSocket(sock)
+        self.sender = TCPSender(communicator=self, sock=self.sock)
+        self.receiver = TCPReceiver(communicator=self, sock=self.sock)
         self.sender.run()
         self.receiver.run()
+
+    def _initSocket(self, sock):
+        if sock is None:
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        else:
+            self.sock = sock
+        self.sock.connect(self.address)

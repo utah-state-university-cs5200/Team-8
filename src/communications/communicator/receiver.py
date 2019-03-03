@@ -18,7 +18,7 @@ class Receiver(Thread):
     def __init__(self, group=None, target=None, name=None, *args, **kwargs):
         super().__init__(group, target, name, args, kwargs)
         self.communicator = kwargs['communicator']
-        self.socket = kwargs['socket']
+        self.sock = kwargs['sock']
 
     def run(self):
         while self.communicator.isActive():

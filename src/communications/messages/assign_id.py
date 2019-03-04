@@ -2,6 +2,9 @@ from src.communications.messages.reply import Reply
 
 
 class AssignID(Reply):
+    type_key = Reply.freshTypeDict()
+    type_key['player_id'] = int
+
     def __init__(self, *args, **kwargs):
         """
         Assign ID message

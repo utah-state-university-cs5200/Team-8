@@ -2,6 +2,8 @@ from src.communications.messages.reply import Reply
 
 
 class GameServerDef(Reply):
+    type_key = Reply.freshTypeDict()
+    type_key['game_id'] = int
     def __init__(self, *args, **kwargs):
         """
         Game Server Definition message

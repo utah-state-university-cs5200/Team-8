@@ -70,8 +70,8 @@ class TestMessageFactory(unittest.TestCase):
                 )
             prop['message_type_id'] = id_val
             # print(prop)
-            message_instace = MessageFactory.build(**prop)
-            byte_string = message_instace.encode()
+            message_instance = MessageFactory.build(**prop)
+            byte_string = message_instance.encode()
             result_message = MessageFactory.fromByteString(byte_string)
             byte_string2 = result_message.encode()
             self.assertEqual(byte_string, byte_string2)

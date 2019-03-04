@@ -9,7 +9,6 @@ from src.communications.communicator.udp.udp_receiver import UDPReceiver
 class UDPCommunicator(Communicator):
     def __init__(self, client, address=None, sock=None):
         super().__init__(client, address, sock)
-        self._initSocket(sock)
         self.sender = UDPSender(communicator=self, sock=self.sock)
         self.receiver = UDPReceiver(communicator=self, sock=self.sock)
         self.sender.start()

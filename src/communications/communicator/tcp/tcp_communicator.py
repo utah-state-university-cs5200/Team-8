@@ -9,7 +9,6 @@ from src.communications.communicator.tcp.tcp_receiver import TCPReceiver
 class TCPCommunicator(Communicator):
     def __init__(self, client, address=None, sock=None):
         super().__init__(client, address, sock)
-        self._initSocket(sock)
         self.sender = TCPSender(communicator=self, sock=self.sock)
         self.receiver = TCPReceiver(communicator=self, sock=self.sock)
         self.sender.start()

@@ -19,7 +19,7 @@ class Listener(Thread):
 
     def run(self):
         self.sock.bind(self.address)
-        self.sock.listen()
+        self.sock.listen() # This isn't to be used with UDP connections
         while self.client.alive:
             conn, addr = self.sock.accept()
             process_id = self.client.getNextProcessID()

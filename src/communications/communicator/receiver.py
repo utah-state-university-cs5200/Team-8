@@ -19,7 +19,8 @@ class Receiver(Thread):
     def run(self):
         while self.communicator.isActive():
             try:
-                message = self._receiveMessage()
+                buf = self._receiveMessage()
+                message = decode(buf)
                 self.communicator.enqueueTask(message)
             except socket.error:
                 time.sleep(THREAD_SLEEP_TIME)
@@ -32,7 +33,7 @@ class Receiver(Thread):
         """
         Create a message from the incoming bytes from the socket, if any
 
-        :return: Message object
+        :return: bytes from socket
         :raises socket.error: If no data is on the socket
         :raises DecodeError: If message could not be decoded
         """

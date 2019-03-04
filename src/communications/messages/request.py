@@ -2,6 +2,7 @@ from src.communications.messages.message import Message
 
 
 class Request(Message):
+    type_key = Message.freshTypeDict()
     def __init__(self, *args, **kwargs):
         """
         Parent class for request-style messages

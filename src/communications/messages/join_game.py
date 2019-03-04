@@ -2,6 +2,10 @@ from src.communications.messages.request import Request
 
 
 class JoinGame(Request):
+    type_key = Request.freshTypeDict()
+    type_key['game_id'] = int
+    type_key['player_id'] = int
+    type_key['player_alias'] = str
     def __init__(self, *args, **kwargs):
         """
         Join Game message

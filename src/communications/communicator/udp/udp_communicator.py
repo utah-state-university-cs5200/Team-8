@@ -6,6 +6,14 @@ from src.communications.communicator.udp.udp_sender import UDPSender
 from src.communications.communicator.udp.udp_receiver import UDPReceiver
 
 
+def initUDPSocket(address, sock=None):
+    if sock is None:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.connect(address)
+    sock.settimeout(SOCKET_TIMEOUT)
+    return sock
+
+
 class UDPCommunicator(Communicator):
     def __init__(self, client, address=None, sock=None):
         super().__init__(client, address, sock)
@@ -16,9 +24,4 @@ class UDPCommunicator(Communicator):
         self.receiver.start()
 
     def _initSocket(self, sock):
-        if sock is None:
-            self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        else:
-            self.sock = sock
-        self.sock.connect(self.address)
-        self.sock.settimeout(SOCKET_TIMEOUT)
+        self.sock = initUDPSocket(self.address, self.sock)

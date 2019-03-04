@@ -1,9 +1,9 @@
 from threading import Thread
 
 
-class Server(Thread):
+class Listener(Thread):
     """
-    Parent server class to be specialized.
+    Parent listener class to be specialized.
 
     Receives connections and creates new sockets for those connections
     :note: Specializations must implement _initSocket, _createCommunicator and _addConnection methods
@@ -18,6 +18,8 @@ class Server(Thread):
         raise NotImplementedError
 
     def run(self):
+        self.sock.bind(self.address)
+        self.sock.listen()
         while self.client.alive:
             conn, addr = self.sock.accept()
             process_id = self.client.getNextProcessID()

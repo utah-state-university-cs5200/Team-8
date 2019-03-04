@@ -1,14 +1,12 @@
 import socket
 
-from src.communications.communicator.server import Server
+from src.communications.communicator.listener import Listener
 from src.communications.communicator.udp.udp_communicator import UDPCommunicator
 
 
-class UDPServer(Server):
+class UDPListener(Listener):
     def _initSocket(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.sock.bind(self.address)
-        self.sock.listen()
 
     def _createCommunicator(self, conn, addr):
         return UDPCommunicator(self.client, address=addr, sock=conn)

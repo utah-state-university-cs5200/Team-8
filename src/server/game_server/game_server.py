@@ -1,16 +1,16 @@
 from queue import Queue
 from threading import Thread
 
-from src.communications.communicator.tcp.tcp_server import TCPServer
-from src.communications.communicator.udp.udp_server import UDPServer
+from src.communications.communicator.tcp.tcp_listener import TCPListener
+from src.communications.communicator.udp.udp_listener import UDPListener
 
 
 class GameServer(Thread):
     def __init__(self, group=None, target=None, name=None, *args, **kwargs):
         super().__init__(group, target, name, args, kwargs)
         self.alive = True
-        self.tcp_communicator = TCPServer(client=self)
-        self.udp_communicator = UDPServer(client=self)
+        self.tcp_listener = TCPListener(client=self)
+        self.udp_listener = UDPListener(client=self)
         self.tcp_comm_pool = {}
         self.udp_comm_pool = {}
         self.task_queue = Queue()

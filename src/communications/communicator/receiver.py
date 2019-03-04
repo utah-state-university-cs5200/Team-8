@@ -2,11 +2,7 @@ import socket
 import time
 from threading import Thread
 
-# TODO: temporary, clean this up later
-SLEEP_TIME = 50
-
-# TODO: implement decode(message) method
-# TODO: implement DecodeError if message cannot be decoded successfully
+from src.communications.communicator.constants import THREAD_SLEEP_TIME
 
 
 class Receiver(Thread):
@@ -25,9 +21,8 @@ class Receiver(Thread):
             try:
                 message = self._receiveMessage()
                 self.communicator.enqueueTask(message)
-            except socket.error as e:
-                print(e)
-                time.sleep(SLEEP_TIME)
+            except socket.error:
+                time.sleep(THREAD_SLEEP_TIME)
             except DecodeError:
                 # TODO: may want to log whenever this happens
                 pass

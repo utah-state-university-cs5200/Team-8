@@ -2,11 +2,7 @@ import time
 from queue import Queue, Empty
 from threading import Thread
 
-
-# TODO: temporary, clean this up later
-SLEEP_TIME = 50
-
-# TODO: create encode(message) method
+from src.communications.communicator.constants import THREAD_SLEEP_TIME
 
 
 class Sender(Thread):
@@ -27,7 +23,7 @@ class Sender(Thread):
                 message = self.message_queue.get(block=False)
                 self._sendMessage(message)
             except Empty:
-                time.sleep(SLEEP_TIME)
+                time.sleep(THREAD_SLEEP_TIME)
         self.communicator.cleanup()
 
     def enqueueMessage(self, message):

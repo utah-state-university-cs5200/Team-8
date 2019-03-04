@@ -1,6 +1,7 @@
 import socket
 
 from src.communications.communicator.communicator import Communicator
+from src.communications.communicator.constants import SOCKET_TIMEOUT
 from src.communications.communicator.udp.udp_sender import UDPSender
 from src.communications.communicator.udp.udp_receiver import UDPReceiver
 
@@ -20,3 +21,4 @@ class UDPCommunicator(Communicator):
         else:
             self.sock = sock
         self.sock.connect(self.address)
+        self.sock.settimeout(SOCKET_TIMEOUT)

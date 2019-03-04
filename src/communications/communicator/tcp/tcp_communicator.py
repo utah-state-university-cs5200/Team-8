@@ -1,6 +1,7 @@
 import socket
 
 from src.communications.communicator.communicator import Communicator
+from src.communications.communicator.constants import SOCKET_TIMEOUT
 from src.communications.communicator.tcp.tcp_sender import TCPSender
 from src.communications.communicator.tcp.tcp_receiver import TCPReceiver
 
@@ -20,3 +21,4 @@ class TCPCommunicator(Communicator):
         else:
             self.sock = sock
         self.sock.connect(self.address)
+        self.sock.settimeout(SOCKET_TIMEOUT)

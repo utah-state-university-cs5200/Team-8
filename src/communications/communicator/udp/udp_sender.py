@@ -2,5 +2,5 @@ from src.communications.communicator.sender import Sender
 
 
 class UDPSender(Sender):
-    def _sendMessage(self, message):
-        self.sock.send(encode(message))
+    def _sendData(self, buf):
+        self.sock.send(buf)

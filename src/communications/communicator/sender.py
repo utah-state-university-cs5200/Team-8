@@ -3,6 +3,7 @@ from queue import Queue, Empty
 from threading import Thread
 
 from src.communications.communicator.constants import THREAD_SLEEP_TIME
+from src.communications.messages.encoder_decoder import EncodeError, encoding
 
 
 class Sender(Thread):
@@ -21,19 +22,22 @@ class Sender(Thread):
         while self.communicator.isActive():
             try:
                 message = self.message_queue.get(block=False)
-                self._sendMessage(message)
+                buf = encoding(message)
+                self._sendData(buf)
             except Empty:
                 time.sleep(THREAD_SLEEP_TIME)
+            except EncodeError:
+                pass # TODO: may want to log this
         self.communicator.cleanup()
 
     def enqueueMessage(self, message):
         self.message_queue.put(message)
 
-    def _sendMessage(self, message):
+    def _sendData(self, buf):
         """
-        Send a message through the socket
+        Send bytes through the socket
 
-        :param message: Message object to be encoded and sent
+        :param buf: bytesstring to be sent
         :return:
         """
         raise NotImplementedError

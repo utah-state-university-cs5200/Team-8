@@ -25,7 +25,8 @@ class Receiver(Thread):
             try:
                 message = self._receiveMessage()
                 self.communicator.enqueueTask(message)
-            except socket.error:
+            except socket.error as e:
+                print(e)
                 time.sleep(SLEEP_TIME)
             except DecodeError:
                 # TODO: may want to log whenever this happens

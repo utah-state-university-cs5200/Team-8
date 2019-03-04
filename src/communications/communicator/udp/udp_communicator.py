@@ -11,8 +11,8 @@ class UDPCommunicator(Communicator):
         self._initSocket(sock)
         self.sender = UDPSender(communicator=self, sock=self.sock)
         self.receiver = UDPReceiver(communicator=self, sock=self.sock)
-        self.sender.run()
-        self.receiver.run()
+        self.sender.start()
+        self.receiver.start()
 
     def _initSocket(self, sock):
         if sock is None:

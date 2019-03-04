@@ -11,8 +11,8 @@ class TCPCommunicator(Communicator):
         self._initSocket(sock)
         self.sender = TCPSender(communicator=self, sock=self.sock)
         self.receiver = TCPReceiver(communicator=self, sock=self.sock)
-        self.sender.run()
-        self.receiver.run()
+        self.sender.start()
+        self.receiver.start()
 
     def _initSocket(self, sock):
         if sock is None:

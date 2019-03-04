@@ -16,7 +16,10 @@ class GameServer(Thread):
         self.tcp_comm_pool = {}
         self.udp_comm_pool = {}
         self.task_queue = Queue()
-        
+
+        self.tcp_listener.start()
+        self.udp_listener.start()
+
     def _initAddress(self, kwargs):
         self.address = DEFAULT_GAME_SERVER_ADDRESS
         try:

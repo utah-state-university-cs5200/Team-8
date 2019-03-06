@@ -20,17 +20,18 @@ class TestMessageFactory(unittest.TestCase):
 
         :return:
         """
-        m1 = MessageFactory.build(message_type_id=MESSAGE_ID_HELLO, player_alias="Test Alias")
+        id_vals = {'message_id':2, 'conv_id':(2, 1)}
+        m1 = MessageFactory.build(message_type_id=MESSAGE_ID_HELLO, player_alias="Test Alias", **id_vals)
         self.assertEqual(m1.getAttributes()["message_type_id"], MESSAGE_ID_HELLO)
         self.assertEqual(m1.getAttributes()["player_alias"], "Test Alias")
 
-        m2 = MessageFactory.build(message_type_id=MESSAGE_ID_SUBMIT_GUESS, player_id=19, word="foo", clue="bar")
+        m2 = MessageFactory.build(message_type_id=MESSAGE_ID_SUBMIT_GUESS, player_id=19, word="foo", clue="bar", **id_vals)
         self.assertEqual(m2.getAttributes()["message_type_id"], MESSAGE_ID_SUBMIT_GUESS)
         self.assertEqual(m2.getAttributes()["player_id"], 19)
         self.assertEqual(m2.getAttributes()["word"], "foo")
         self.assertEqual(m2.getAttributes()["clue"], "bar")
 
-        m3 = MessageFactory.build(message_type_id=MESSAGE_ID_ASSIGN_ID, request_id=4, message_status=MESSAGE_STATUS_SUCCESS, player_id=8)
+        m3 = MessageFactory.build(message_type_id=MESSAGE_ID_ASSIGN_ID, request_id=4, message_status=MESSAGE_STATUS_SUCCESS, player_id=8, **id_vals)
         self.assertEqual(m3.getAttributes()["message_type_id"], MESSAGE_ID_ASSIGN_ID)
         self.assertEqual(m3.getAttributes()["request_id"], 4)
         self.assertEqual(m3.getAttributes()["message_status"], MESSAGE_STATUS_SUCCESS)
@@ -52,9 +53,11 @@ class TestMessageFactory(unittest.TestCase):
     @hypothesis.given(hypothesis.strategies.data())
     @hypothesis.settings(deadline=None)
     def testReversibilityOfEncoding(self, data):
+        st_int = hypothesis.strategies.integers()
         strat_map = {
-            int:hypothesis.strategies.integers(),
+            int:st_int,
             str:hypothesis.strategies.characters(),
+            (int, int):hypothesis.strategies.tuples(st_int, st_int),
             }
         vals = [item for item in dir(constants) if not item.startswith("__")]
         for term in vals:

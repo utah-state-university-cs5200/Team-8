@@ -36,3 +36,23 @@ thoughts:
 		wanted: messages to be uniquely identifiable in almost all cases
 		solution: a decoded message must have a sender id and a message id
 		ergo: in the process of generating a message, it must have a sender id and a message id
+
+	conversations and their behavior:
+		a conversation object consists of a list of messages
+		a conversation can infer from the last message what next action should be taken or message should be sent
+		a conversation would need to know which client it belongs to know which action should be taken
+			ie: a player client should never be assigning new player ids or making game servers
+			ergo: dedicated objects for each kind of message would need sufficient functional detail to act on either clients behalf
+				or have twice as many conversation classes
+				or have a function that responds with a function name that the client uses to check against a registry of allowable actions and if it can, it does
+		possible flow:
+			1: client receives a message
+			2: client puts decoded message in appropriate conversation
+			3: client inspects conversations suggestion for next action
+			4: if actionable, act, else, wait, go back to 1/2
+
+def ack_player(message_responding_to):
+	ack(message_responding_to)
+
+def ack(message_responding_to):
+	#however we decide to ack

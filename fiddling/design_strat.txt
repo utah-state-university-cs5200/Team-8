@@ -48,11 +48,31 @@ thoughts:
 		possible flow:
 			1: client receives a message
 			2: client puts decoded message in appropriate conversation
-			3: client inspects conversations suggestion for next action
-			4: if actionable, act, else, wait, go back to 1/2
+		separate flow
+			1: client inspects all conversations for suggestion for next action
+			2: if actionable, act, else, wait, go back to 1
+		if conversation has a method #nextAction and it returns a string, what is the easiest way to invoke a function given a string
+			dir(self) #generates large list which includes both instance variables and instance methods
+			getattr(self, conversation.nextAction) #if action in is a valid method
+		needed:
+			mapping between message types and conversation types
+				ie: hello and playerid belong to add player to network conversation
+			conversation id needed to indicate which conversation is being modified
+				initiating message (which will have a unique id, excepting for the hello message) can be used
+				hello conversation will have player IP address as unique ID?
+		thought:
+			client.conversations -> dictionary with {(message_id, sender_id): conversation_object}
+		certain messages prompt creation of a new conversation object
+		a conversation object would need to be put into the conversations dictionary upon creation
+		if the conversation created is the hello conversation, generate a unique player id and set that as sender id for conversation
 
 def ack_player(message_responding_to):
 	ack(message_responding_to)
 
 def ack(message_responding_to):
 	#however we decide to ack
+
+def clean_up_conversations(self, conv_id):
+	del(self.conversations[conv_id])
+
+Conversation -> NewPLayerConversation

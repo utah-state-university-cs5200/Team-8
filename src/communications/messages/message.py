@@ -3,7 +3,8 @@ from src.communications.messages.encoder_decoder import encoding
 
 class Message:
     type_key = {'message_type_id': int}
-    type_key = {'message_id': int}
+    type_key['message_id'] = int
+    type_key['conv_id'] = tuple #consisting of message_id and sender_id
     def __init__(self, *args, **kwargs):
         """
         Parent message class for both request and reply messages
@@ -13,6 +14,7 @@ class Message:
         """
         self.message_type_id = kwargs["message_type_id"]
         self.message_id = kwargs["message_id"]
+        self.conv_id = kwargs["conv_id"]
 
     def getAttributes(self):
         return vars(self)

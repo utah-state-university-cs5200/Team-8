@@ -52,9 +52,11 @@ class TestMessageFactory(unittest.TestCase):
     @hypothesis.given(hypothesis.strategies.data())
     @hypothesis.settings(deadline=None)
     def testReversibilityOfEncoding(self, data):
+        st_ints = hypothesis.strategies.integers()
         strat_map = {
-            int:hypothesis.strategies.integers(),
+            int:st_ints,
             str:hypothesis.strategies.characters(),
+            tuple:hypothesis.strategies.tuples(st_ints, st_ints),
             }
         vals = [item for item in dir(constants) if not item.startswith("__")]
         for term in vals:
@@ -63,13 +65,14 @@ class TestMessageFactory(unittest.TestCase):
             id_val = getattr(constants, term)
             message_class = MessageFactory.MESSAGE_TYPE_ID_MAP[id_val]
             types = message_class.freshTypeDict()
+            # print(types)
             for argument in types.keys():
                 types[argument] = strat_map[types[argument]]
             prop = data.draw(
                 hypothesis.strategies.fixed_dictionaries(types)
                 )
             prop['message_type_id'] = id_val
-            # print(prop)
+            print(prop)
             message_instance = MessageFactory.build(**prop)
             byte_string = message_instance.encode()
             result_message = MessageFactory.fromByteString(byte_string)

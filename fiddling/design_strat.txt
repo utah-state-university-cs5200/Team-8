@@ -2,3 +2,37 @@ prioritize getting a minimal lobby client and player client that can handle assi
 	goal: no more than 5 files excluding tests
 once that set up is accomplished which will likely have a lot of specific solutions, try to generalize, figure out how we're using things and where can make specific things like sockets passed in as arguments so they are easily stubbed out
 once interface pattern decided on, delegating work should be easier
+
+goal:
+	a lobby server that can give a player client a player_id
+	lobby will need:
+		a socket to recieve+send udp packets
+		logic to respond to message requesting id
+		logic to give unique player_id
+		logic to send unique player_id
+	player will need
+		a socket to receive+send udp packets
+		logic to send request
+		logic to parse response
+		logic to set new player_id internally
+
+
+thoughts:
+	uniqueness of messages:
+		all senders have the ability to give internally generated messages unique IDs
+		all senders also have unique ID's for themselves
+			only one lobby
+			lobbby gives out player ids
+			lobby gives out game id's
+		between unique sender id and internal unique message id, message is uniquely identified
+		ergo: if a message has included it the sender ID and the senders generated message id, it will be unique in that aspect
+		problem: we do not generate or include message id on messages, only type id and usually sender id
+		problem: when generating a message from decoded data in factory, we need the message to use the provided ID, not a generated one
+		work arounds:
+			1: have message init distinguish between generated from byte code or not
+			2: have message id tabulated on send,
+			3: have message id tabulated by relevant senders and give messageid as part of arguments
+
+		wanted: messages to be uniquely identifiable in almost all cases
+		solution: a decoded message must have a sender id and a message id
+		ergo: in the process of generating a message, it must have a sender id and a message id

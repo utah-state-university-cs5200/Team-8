@@ -2,6 +2,8 @@ from src.communications.messages.request import Request
 
 
 class TerminateGame(Request):
+    type_key = Request.freshTypeDict()
+    type_key['game_id'] = int
     def __init__(self, *args, **kwargs):
         """
         Terminate Game message

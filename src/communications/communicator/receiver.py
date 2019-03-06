@@ -3,6 +3,7 @@ import time
 from threading import Thread
 
 from src.communications.communicator.constants import THREAD_SLEEP_TIME
+from src.communications.messages.encoder_decoder import decoding, DecodeError
 
 
 class Receiver(Thread):
@@ -19,7 +20,8 @@ class Receiver(Thread):
     def run(self):
         while self.communicator.isActive():
             try:
-                message = self._receiveMessage()
+                buf = self._receiveData()
+                message = decoding(buf)
                 self.communicator.enqueueTask(message)
             except socket.error:
                 time.sleep(THREAD_SLEEP_TIME)
@@ -28,11 +30,11 @@ class Receiver(Thread):
                 pass
         self.communicator.cleanup()
 
-    def _receiveMessage(self):
+    def _receiveData(self):
         """
-        Create a message from the incoming bytes from the socket, if any
+        Return bytes from the socket, if any
 
-        :return: Message object
+        :return: bytes from socket
         :raises socket.error: If no data is on the socket
         :raises DecodeError: If message could not be decoded
         """

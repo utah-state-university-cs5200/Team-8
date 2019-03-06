@@ -1,7 +1,9 @@
 from src.communications.messages.reply import Reply
 
-
+#warning: this is probably one of our tcp responses and will likely be wonky
 class GameList(Reply):
+    type_key = Reply.freshTypeDict()
+    type_key['game_list']=str
     def __init__(self, *args, **kwargs):
         """
         Game List message

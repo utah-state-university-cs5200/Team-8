@@ -2,6 +2,5 @@ from src.communications.communicator.receiver import Receiver
 
 
 class TCPReceiver(Receiver):
-    def _receiveMessage(self):
-        buffer = self.sock.recv(1024)
-        return decode(buffer)
+    def _receiveData(self):
+        return self.sock.recv(1024)

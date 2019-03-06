@@ -2,6 +2,10 @@ from src.communications.messages.message import Message
 
 
 class Reply(Message):
+    type_key = Message.freshTypeDict()
+    type_key['request_id'] = int
+    type_key['message_status'] = int
+
     def __init__(self, *args, **kwargs):
         """
         Parent class for reply-style messages

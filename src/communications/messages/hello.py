@@ -2,6 +2,8 @@ from src.communications.messages.request import Request
 
 
 class Hello(Request):
+    type_key = Request.freshTypeDict()
+    type_key['player_alias'] = str
     def __init__(self, *args, **kwargs):
         """
         Hello message

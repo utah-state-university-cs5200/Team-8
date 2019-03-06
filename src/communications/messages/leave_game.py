@@ -2,6 +2,8 @@ from src.communications.messages.request import Request
 
 
 class LeaveGame(Request):
+    type_key = Request.freshTypeDict()
+    type_key['player_id'] = int
     def __init__(self, *args, **kwargs):
         """
         Leave Game message

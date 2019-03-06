@@ -1,0 +1,4 @@
+prioritize getting a minimal lobby client and player client that can handle assigning a player a player id
+	goal: no more than 5 files excluding tests
+once that set up is accomplished which will likely have a lot of specific solutions, try to generalize, figure out how we're using things and where can make specific things like sockets passed in as arguments so they are easily stubbed out
+once interface pattern decided on, delegating work should be easier

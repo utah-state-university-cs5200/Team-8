@@ -57,6 +57,7 @@ thoughts:
 		needed:
 			mapping between message types and conversation types
 				ie: hello and playerid belong to add player to network conversation
+				alternatively: if messages that belong to conversations know what conversation they belong to they can be sorted via ID
 			conversation id needed to indicate which conversation is being modified
 				initiating message (which will have a unique id, excepting for the hello message) can be used
 				hello conversation will have player IP address as unique ID?

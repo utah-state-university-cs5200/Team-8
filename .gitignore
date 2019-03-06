@@ -1,2 +1,6 @@
 *.pyc
 *.log
+src/__pycache__/
+.idea/
+venv/
+.hypothesis/

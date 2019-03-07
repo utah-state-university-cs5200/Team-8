@@ -19,12 +19,15 @@ class Listener(Thread):
 
     def run(self):
         self.sock.bind(self.address)
-        self.sock.listen() # This isn't to be used with UDP connections
+        self.sock.listen()
         while self.client.alive:
-            conn, addr = self.sock.accept()
-            process_id = self.client.getNextProcessID()
-            communicator = self._createCommunicator(conn, addr)
-            self._addConnection(process_id, communicator)
+            try:
+                conn, addr = self.sock.accept()
+                process_id = self.client.getNextProcessID()
+                communicator = self._createCommunicator(conn, addr)
+                self._addConnection(process_id, communicator)
+            except ConnectionAbortedError:
+                pass
         self.cleanup()
 
     def cleanup(self):

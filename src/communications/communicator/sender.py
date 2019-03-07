@@ -21,9 +21,11 @@ class Sender(Thread):
     def run(self):
         while self.communicator.isActive():
             try:
-                message = self.message_queue.get(block=False)
-                buf = encoding(message)
-                self._sendData(buf)
+                envelope = self.message_queue.get(block=False)
+                # TODO: This isn't the ideal way to do this. Do we close the socket after the message has been sent?
+                address = envelope.address
+                buf = encoding(envelope.message)
+                self._sendData(buf, address)
             except Empty:
                 time.sleep(THREAD_SLEEP_TIME)
             except EncodeError:
@@ -33,7 +35,7 @@ class Sender(Thread):
     def enqueueMessage(self, message):
         self.message_queue.put(message)
 
-    def _sendData(self, buf):
+    def _sendData(self, buf, address):
         """
         Send bytes through the socket
 

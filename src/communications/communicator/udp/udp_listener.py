@@ -8,9 +8,9 @@ from src.communications.messages.encoder_decoder import encoding
 class UDPListener(Listener):
     def run(self):
         self.sock.bind(self.address)
-        while self.client.alive:
+        while self.dispatcher.alive:
             buf, addr = self.sock.accept()
-            process_id = self.client.getNextProcessID()
+            process_id = self.dispatcher.getNextProcessID()
             conn = initUDPSocket(addr)
             communicator = self._createCommunicator(conn, addr)
             communicator.enqueueTask(encoding(buf))
@@ -21,7 +21,7 @@ class UDPListener(Listener):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     def _createCommunicator(self, conn, addr):
-        return UDPCommunicator(self.client, address=addr, sock=conn)
+        return UDPCommunicator(self.dispatcher, address=addr, sock=conn)
 
     def _addConnection(self, process_id, communicator):
-        self.client.addUDPConnection(process_id, communicator)
+        self.dispatcher.addUDPConnection(process_id, communicator)

@@ -8,10 +8,10 @@ class Listener(Thread):
     Receives connections and creates new sockets for those connections
     :note: Specializations must implement _initSocket, _createCommunicator and _addConnection methods
     """
-    def __init__(self, group=None, target=None, name=None, *args, **kwargs):
+    def __init__(self, dispatcher, address, group=None, target=None, name=None, *args, **kwargs):
         super().__init__(group, target, name, args, kwargs)
-        self.client = kwargs['client']
-        self.address = kwargs['address']
+        self.dispatcher = dispatcher
+        self.address = address
         self._initSocket()
 
     def _initSocket(self):
@@ -20,9 +20,9 @@ class Listener(Thread):
     def run(self):
         self.sock.bind(self.address)
         self.sock.listen()
-        while self.client.alive:
+        while self.dispatcher.alive:
             conn, addr = self.sock.accept()
-            process_id = self.client.getNextProcessID()
+            process_id = self.dispatcher.getNextProcessID()
             communicator = self._createCommunicator(conn, addr)
             self._addConnection(process_id, communicator)
         self.cleanup()

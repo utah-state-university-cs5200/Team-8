@@ -15,8 +15,8 @@ def initTCPSocket(address, sock=None):
 
 
 class TCPCommunicator(Communicator):
-    def __init__(self, client, address=None, sock=None):
-        super().__init__(client, address, sock)
+    def __init__(self, dispatcher, address=None, sock=None):
+        super().__init__(dispatcher, address, sock)
         self._initSocket(sock)
         self.sender = TCPSender(communicator=self, sock=self.sock)
         self.receiver = TCPReceiver(communicator=self, sock=self.sock)

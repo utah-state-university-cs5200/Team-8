@@ -15,8 +15,8 @@ def initUDPSocket(address, sock=None):
 
 
 class UDPCommunicator(Communicator):
-    def __init__(self, client, address=None, sock=None):
-        super().__init__(client, address, sock)
+    def __init__(self, dispatcher, address=None, sock=None):
+        super().__init__(dispatcher, address, sock)
         self._initSocket(sock)
         self.sender = UDPSender(communicator=self, sock=self.sock)
         self.receiver = UDPReceiver(communicator=self, sock=self.sock)

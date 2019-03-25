@@ -9,7 +9,7 @@ class TCPListener(Listener):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def _createCommunicator(self, conn, addr):
-        return TCPCommunicator(self.client, address=addr, sock=conn)
+        return TCPCommunicator(self.dispatcher, address=addr, sock=conn)
 
     def _addConnection(self, process_id, communicator):
-        self.client.addTCPConnection(process_id, communicator)
+        self.dispatcher.addTCPConnection(process_id, communicator)

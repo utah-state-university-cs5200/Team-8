@@ -5,15 +5,15 @@ class Communicator:
     """
     Parent communicator class to be specialized
     """
-    def __init__(self, client, address=None, sock=None):
+    def __init__(self, dispatcher, address=None, sock=None):
         """
         Constructor
 
-        :param client: Client program
+        :param dispatcher: Process that processes messages
         :param address: IP address for socket
         :param sock: Socket object if you want to pass in an existing socket
         """
-        self.client = client
+        self.dispatcher = dispatcher
         self._initAddress(address)
         self._initSocket(sock)
         self.sender = None
@@ -34,7 +34,7 @@ class Communicator:
 
         :return: True if client is alive, false otherwise
         """
-        return self.client.alive
+        return self.dispatcher.alive
 
     def sendMessage(self, message):
         """
@@ -52,7 +52,7 @@ class Communicator:
         :param task: Task/message to be processed by the client
         :return:
         """
-        self.client.enqueueTask(task)
+        self.dispatcher.enqueueTask(task)
 
     def cleanup(self):
         """

@@ -3,7 +3,6 @@ from src.communications.messages.request import Request
 
 class Contact(Request):
     type_key = Request.freshTypeDict()
-    type_key['player_id'] = int
     type_key['clue_id'] = int
     type_key['guess'] = str
 
@@ -15,6 +14,8 @@ class Contact(Request):
         :param kwargs: {message_type_id, player_id, clue_id, guess}
         """
         super().__init__(*args, **kwargs)
-        self.player_id = kwargs["player_id"]
         self.clue_id = kwargs["clue_id"]
         self.guess = kwargs["guess"]
+
+    def player_id(self):
+        return self.sender_id

@@ -13,9 +13,11 @@ class GameServer(Thread):
         super().__init__(group, target, name, args, kwargs)
         self.alive = True
         self._initAddresses(kwargs)
+        self._initConversations()
         self._initDispatcher()
         self._initListeners()
 
+    def _initConversations(self):
         self.conversation_dict = ConversationDictionary()
         self.conversation_factory = ConversationFactory()
 
@@ -29,6 +31,8 @@ class GameServer(Thread):
 
         self.tcp_listener.start()
         self.udp_listener.start()
+        print("Listening for TCP messages on {}".format(self.tcp_address))
+        print("Listening for UDP messages on {}".format(self.udp_address))
 
     def _initAddresses(self, kwargs):
         self.udp_address = DEFAULT_GAME_SERVER_UDP_ADDRESS

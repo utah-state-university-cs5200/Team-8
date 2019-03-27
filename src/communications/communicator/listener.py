@@ -3,13 +3,17 @@ from threading import Thread
 
 class Listener(Thread):
     """
-    Parent listener class to be specialized.
+    Parent server listener class to be specialized into UDP and TCP variants.
 
-    Receives connections and creates new sockets for those connections
-    :note: Specializations must implement _initSocket, _createCommunicator and _addConnection methods
+    Binds to an address, listens for incoming messages, puts those messages into envelopes,
+    and sends those envelopes to the dispatcher to be processed
+
+    :note: Specializations must implement _initSocket and run methods
+    :note: Dispatcher is expected to have a processEnvelope(envelope) method
     """
     def __init__(self, dispatcher, address, group=None, target=None, name=None, *args, **kwargs):
         super().__init__(group, target, name, args, kwargs)
+        self.alive = True
         self.dispatcher = dispatcher
         self.address = address
         self._initSocket()
@@ -18,23 +22,10 @@ class Listener(Thread):
         raise NotImplementedError
 
     def run(self):
-        self.sock.bind(self.address)
-        self.sock.listen()
-        while self.dispatcher.alive:
-            try:
-                conn, addr = self.sock.accept()
-                process_id = self.dispatcher.getNextProcessID()
-                communicator = self._createCommunicator(conn, addr)
-                self._addConnection(process_id, communicator)
-            except ConnectionAbortedError:
-                pass
-        self.cleanup()
+        raise NotImplementedError
 
     def cleanup(self):
         self.sock.close()
 
-    def _createCommunicator(self, conn, addr):
-        raise NotImplementedError
-
-    def _addConnection(self, process_id, communicator):
-        raise NotImplementedError
+    def dispatchEnvelope(self, envelope):
+        self.dispatcher.processEnvelope(envelope)

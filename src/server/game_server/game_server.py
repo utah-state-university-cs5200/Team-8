@@ -2,6 +2,9 @@ from threading import Thread
 
 from src.communications.communicator.tcp.tcp_listener import TCPListener
 from src.communications.communicator.udp.udp_listener import UDPListener
+from src.communications.conversation.conversation_dictionary import ConversationDictionary
+from src.communications.conversation.conversation_factory import ConversationFactory
+from src.server.dispatcher import Dispatcher
 from src.server.game_server.constants import DEFAULT_GAME_SERVER_UDP_ADDRESS, DEFAULT_GAME_SERVER_TCP_ADDRESS
 
 
@@ -9,18 +12,25 @@ class GameServer(Thread):
     def __init__(self, group=None, target=None, name=None, *args, **kwargs):
         super().__init__(group, target, name, args, kwargs)
         self.alive = True
-        self._initAddress(kwargs)
+        self._initAddresses(kwargs)
         self._initDispatcher()
+        self._initListeners()
+
+        self.conversation_dict = ConversationDictionary()
+        self.conversation_factory = ConversationFactory()
+
+    def _initDispatcher(self):
+        self.dispatcher = Dispatcher(conversation_dict=self.conversation_dict,
+                                     conversation_factory=self.conversation_factory)
+
+    def _initListeners(self):
         self.tcp_listener = TCPListener(address=self.tcp_address, dispatcher=self.dispatcher)
         self.udp_listener = UDPListener(address=self.udp_address, dispatcher=self.dispatcher)
 
         self.tcp_listener.start()
         self.udp_listener.start()
 
-    def _initDispatcher(self):
-        self.dispatcher = None # TODO: make a dispatcher
-
-    def _initAddress(self, kwargs):
+    def _initAddresses(self, kwargs):
         self.udp_address = DEFAULT_GAME_SERVER_UDP_ADDRESS
         self.tcp_address = DEFAULT_GAME_SERVER_TCP_ADDRESS
         try:

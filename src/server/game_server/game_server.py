@@ -12,13 +12,13 @@ class GameServer(Thread):
         self.alive = True
         self._initAddress(kwargs)
         self.tcp_listener = TCPListener(address=self.address, client=self)
-        self.udp_listener = UDPListener(address=self.address, client=self)
+        # self.udp_listener = UDPListener(address=self.address, client=self)
         self.tcp_comm_pool = {}
         self.udp_comm_pool = {}
         self.task_queue = Queue()
 
         self.tcp_listener.start()
-        self.udp_listener.start()
+        # self.udp_listener.start()
 
     def _initAddress(self, kwargs):
         self.address = DEFAULT_GAME_SERVER_ADDRESS

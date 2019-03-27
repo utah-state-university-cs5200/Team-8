@@ -21,10 +21,13 @@ class Listener(Thread):
         self.sock.bind(self.address)
         self.sock.listen()
         while self.dispatcher.alive:
-            conn, addr = self.sock.accept()
-            process_id = self.dispatcher.getNextProcessID()
-            communicator = self._createCommunicator(conn, addr)
-            self._addConnection(process_id, communicator)
+            try:
+                conn, addr = self.sock.accept()
+                process_id = self.dispatcher.getNextProcessID()
+                communicator = self._createCommunicator(conn, addr)
+                self._addConnection(process_id, communicator)
+            except ConnectionAbortedError:
+                pass
         self.cleanup()
 
     def cleanup(self):

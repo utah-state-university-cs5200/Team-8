@@ -25,6 +25,7 @@ class Listener(Thread):
         raise NotImplementedError
 
     def cleanup(self):
+        self.alive = False
         self.sock.close()
 
     def dispatchEnvelope(self, envelope):

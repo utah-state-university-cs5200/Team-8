@@ -48,3 +48,7 @@ class GameServer(Thread):
 
     def getNextProcessID(self):
         return 1 # TODO: return a new unique process id for connecting processes
+
+    def cleanup(self):
+        self.udp_listener.cleanup()
+        self.tcp_listener.cleanup()

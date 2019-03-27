@@ -31,3 +31,7 @@ class PlayerClient(Thread):
     def _initCommunicators(self):
         self.udp_communicator = UDPCommunicator(self.dispatcher, address=self.serverUDPAddress)
         self.tcp_communicator = TCPCommunicator(self.dispatcher, address=self.serverTCPAddress)
+
+    def cleanup(self):
+        self.udp_communicator.cleanup()
+        self.tcp_communicator.cleanup()

@@ -24,4 +24,7 @@ class UDPCommunicator(Communicator):
         self.receiver.start()
 
     def _initSocket(self, sock):
-        self.sock = initUDPSocket(self.address, sock)
+        if not sock:
+            self.sock = initUDPSocket(self.address, sock)
+        else:
+            self.sock = sock

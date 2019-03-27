@@ -5,4 +5,4 @@ class Dispatcher:
         self.conversation_factory = conversation_factory
 
     def processEnvelope(self, envelope):
-        pass # TODO: process an envelope
+        print("Received envelope from {} containing {}".format(envelope.address, envelope.message)) # TODO: process an envelope

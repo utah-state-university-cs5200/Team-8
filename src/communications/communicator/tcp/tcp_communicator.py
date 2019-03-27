@@ -9,7 +9,7 @@ from src.communications.communicator.tcp.tcp_receiver import TCPReceiver
 def initTCPSocket(address, sock=None):
     if sock is None:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind(address)
+    sock.connect(address)
     sock.settimeout(SOCKET_TIMEOUT)
     return sock
 

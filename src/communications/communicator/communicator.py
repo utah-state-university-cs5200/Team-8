@@ -1,4 +1,5 @@
 from src.communications.communicator.constants import DEFAULT_SERVER_ADDRESS
+from src.communications.conversation.envelope import Envelope
 
 
 class Communicator:
@@ -13,6 +14,7 @@ class Communicator:
         :param address: IP address for socket
         :param sock: Socket object if you want to pass in an existing socket
         """
+        self.alive = True
         self.dispatcher = dispatcher
         self._initAddress(address)
         self._initSocket(sock)
@@ -32,9 +34,9 @@ class Communicator:
         """
         Check if communicator is active
 
-        :return: True if client is alive, false otherwise
+        :return: True if communicator is alive, false otherwise
         """
-        return self.dispatcher.alive
+        return self.alive
 
     def sendMessage(self, message):
         """
@@ -45,14 +47,26 @@ class Communicator:
         """
         self.sender.enqueueMessage(message)
 
+    def sendEnvelope(self, envelope):
+        """
+        Send an envelope through the sender if it matches the address of this communicator
+
+        :param envelope: envelope containing message and address
+        """
+        if envelope.address == self.address:
+            self.sendMessage(envelope.message)
+        else:
+            pass # TODO: may want to log this - sending an envelope through the wrong communicator
+
     def enqueueTask(self, task):
         """
-        Forward a task to the client's task queue
+        Forward a task to the dispatcher as an envelope
 
-        :param task: Task/message to be processed by the client
+        :param task: Task/message to be processed by the dispatcher
         :return:
         """
-        self.dispatcher.enqueueTask(task)
+        envelope = Envelope(message=task, address = self.address)
+        self.dispatcher.processEnvelope(envelope)
 
     def cleanup(self):
         """
@@ -60,4 +74,5 @@ class Communicator:
 
         :return:
         """
+        self.alive = False
         self.sock.close()

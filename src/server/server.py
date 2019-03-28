@@ -23,6 +23,7 @@ class Server(Thread):
         self._initListeners()
 
     def _initConversations(self):
+        self.conversation_id = 0
         self.conversation_dict = ConversationDictionary()
         self.conversation_factory = ConversationFactory()
 
@@ -56,6 +57,16 @@ class Server(Thread):
 
     def getNextProcessID(self):
         return 1 # TODO: return a new unique process id for connecting processes
+
+    def getNextConversationID(self):
+        """
+        Gets a new unique conversation id for this client
+
+        :return: int: conversation_id
+        """
+        self.conversation_id += 1
+        return self.conversation_id
+
 
     def cleanup(self):
         self.udp_listener.cleanup()

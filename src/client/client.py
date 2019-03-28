@@ -22,6 +22,7 @@ class Client(Thread):
         self.serverTCPAddress = DEFAULT_LOBBY_TCP_ADDRESS
 
     def _initConversations(self):
+        self.conversation_id = 0
         self.conversation_dict = ConversationDictionary()
         self.conversation_factory = ConversationFactory()
 
@@ -36,3 +37,12 @@ class Client(Thread):
     def cleanup(self):
         self.udp_communicator.cleanup()
         self.tcp_communicator.cleanup()
+
+    def getNextConversationID(self):
+        """
+        Gets a new unique conversation id for this client
+
+        :return: int: conversation_id
+        """
+        self.conversation_id += 1
+        return self.conversation_id

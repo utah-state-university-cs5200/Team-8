@@ -22,7 +22,6 @@ class Receiver(Thread):
             try:
                 buf = self._receiveData()
                 message = decode(buf)
-                print("Received {}".format(message))
                 self.communicator.enqueueTask(message)
             except socket.error:
                 time.sleep(THREAD_SLEEP_TIME)

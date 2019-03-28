@@ -13,7 +13,7 @@ class EncodeError(Exception):
 
 def encode(message):
     try:
-        return decoding(message.getAttributes())
+        return encoding(message.getAttributes())
     except Exception as e:
         raise EncodeError(e)
 

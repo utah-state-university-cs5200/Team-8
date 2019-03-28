@@ -39,9 +39,12 @@ class Server(Thread):
         print("Listening for TCP messages on {}".format(self.tcp_address))
         print("Listening for UDP messages on {}".format(self.udp_address))
 
-    def _initAddresses(self, kwargs):
+    def _initDefaultAddresses(self):
         self.udp_address = DEFAULT_SERVER_UDP_ADDRESS
         self.tcp_address = DEFAULT_SERVER_TCP_ADDRESS
+
+    def _initAddresses(self, kwargs):
+        self._initDefaultAddresses()
         try:
             self.udp_address = kwargs['udp_address']
         except KeyError:

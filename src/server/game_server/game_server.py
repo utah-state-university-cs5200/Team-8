@@ -11,8 +11,13 @@ class GameServer(Server):
     """
     def __init__(self, group=None, target=None, name=None, *args, **kwargs):
         super().__init__(group, target, name, args, kwargs)
-        self.players = []
         self._initGame()
+
+    def getPlayer(self, id):
+        pass # TODO: return player by id
+
+    def getSecretKeeper(self):
+        pass # TODO: return the current secret keeper
 
     def _initGame(self):
         self.game = Game()

@@ -3,7 +3,7 @@ import time
 from threading import Thread
 
 from src.communications.communicator.constants import THREAD_SLEEP_TIME
-from src.communications.messages.encoder_decoder import decoding, DecodeError
+from src.communications.messages.encoder_decoder import DecodeError, decode
 
 
 class Receiver(Thread):
@@ -21,7 +21,8 @@ class Receiver(Thread):
         while self.communicator.isActive():
             try:
                 buf = self._receiveData()
-                message = decoding(buf)
+                message = decode(buf)
+                print("Received {}".format(message))
                 self.communicator.enqueueTask(message)
             except socket.error:
                 time.sleep(THREAD_SLEEP_TIME)

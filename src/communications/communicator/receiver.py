@@ -25,6 +25,8 @@ class Receiver(Thread):
                 self.communicator.enqueueTask(message)
             except socket.timeout:
                 time.sleep(THREAD_SLEEP_TIME)
+            except OSError:
+                return
             except DecodeError:
                 # TODO: may want to log whenever this happens
                 pass

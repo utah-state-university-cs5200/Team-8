@@ -23,5 +23,6 @@ print("Sending {}".format(m1.getAttributes()))
 udp_communicator.sendMessage(m1)
 
 time.sleep(1)
+print("Cleaning up...")
 udp_communicator.cleanup()
 udp_listener.cleanup()

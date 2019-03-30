@@ -15,6 +15,8 @@ server_address = ('127.0.0.1', 7777)
 tcp_listener = TCPListener(dispatcher=mock_dispatcher, address=server_address)
 tcp_listener.start()
 
+time.sleep(1)
+
 tcp_communicator = TCPCommunicator(dispatcher=mock_dispatcher, address=server_address)
 
 id_vals = {'message_id':2, 'sender_id':1}

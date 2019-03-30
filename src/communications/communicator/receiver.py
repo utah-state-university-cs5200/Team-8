@@ -23,7 +23,7 @@ class Receiver(Thread):
                 buf = self._receiveData()
                 message = decode(buf)
                 self.communicator.enqueueTask(message)
-            except socket.error:
+            except socket.timeout:
                 time.sleep(THREAD_SLEEP_TIME)
             except DecodeError:
                 # TODO: may want to log whenever this happens

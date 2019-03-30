@@ -16,6 +16,8 @@ class UDPListener(Listener):
                 self.dispatchEnvelope(envelope)
             except socket.timeout:
                 time.sleep(THREAD_SLEEP_TIME)
+            except OSError:
+                return
 
     def _initSocket(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

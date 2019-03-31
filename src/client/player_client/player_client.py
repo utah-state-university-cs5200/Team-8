@@ -7,6 +7,7 @@ class PlayerClient(Client):
     def __init__(self, group=None, target=None, name=None, *args, **kwargs):
         super().__init__(group, target, name, args, kwargs)
         self.player = Player()
+        # TODO:
 
     def hello(self):
         hello_conversation = self.conversation_factory.build(
@@ -38,7 +39,6 @@ class PlayerClient(Client):
             remote_endpoint=self.serverUDPAddress,
             player_id=self.player.id,
             contact_id=contact_id
-
         )
         keeper_block_conversation.start()
         self.conversation_dict.add(keeper_block_conversation)
@@ -57,11 +57,28 @@ class PlayerClient(Client):
 
     def give_clue(self, clue):
         """A player submits a clue for the word"""
-        pass
+        give_clue_conversation = self.conversation_factory.build(
+            conversation_type_id=GIVE_CLUE,
+            conversation_id=self.getNextConversationID(),
+            remote_endpoint=self.serverUDPAddress,
+            player_id=self.player.id,
+            new_clue=clue
+        )
+        give_clue_conversation.start()
+        self.conversation_dict.add(give_clue_conversation)
 
-    def initiate_contact(self):
+    def initiate_contact(self, clue_id, guess_word):
         """A player initiates contact on a clue"""
-        pass
+        initiate_contact_conversation = self.conversation_factory.build(
+            conversation_type_id=GIVE_CLUE,
+            conversation_id=self.getNextConversationID(),
+            remote_endpoint=self.serverUDPAddress,
+            player_id=self.player.id,
+            clue_id=clue_id,
+            guess_word=guess_word
+        )
+        initiate_contact_conversation.start()
+        self.conversation_dict.add(initiate_contact_conversation)
 
     def update_client(self):
         """Updates all data/fields on the client"""

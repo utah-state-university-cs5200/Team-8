@@ -5,17 +5,15 @@ from enum import Enum
 from threading import Thread
 from src.communications.conversation.envelope import Envelope
 
-
 DEFAULT_TIMEOUT = 30
 DEFAULT_MAX_RETRY = 3
 
 
-
 class PossibleState(Enum):
-    NotInitialized = 1
-    Working = 2
-    Failed = 3
-    Succeeded = 4
+    NOT_INITIALIZED = 1
+    WORKING = 2
+    FAILED = 3
+    SUCCEEDED = 4
 
 
 # Abstract class
@@ -26,7 +24,7 @@ class Conversation(Thread):
         super().__init__()
         self._alive = True
         self._incoming_messages = queue.Queue()
-        self._possible_state = PossibleState
+        self._possible_state = PossibleState.NOT_INITIALIZED
 
         self.com_system = com_system
         self.conversation_id = conversation_id
@@ -48,14 +46,17 @@ class Conversation(Thread):
             print('Invalid incoming envelope')
 
     def is_alive(self):
-        return self._alive
+        if self._alive and not self._possible_state == PossibleState.FAILED:
+            return True
+        else:
+            return False
 
     def _execute_details(self):
         raise NotImplementedError
 
     def _is_envelope_valid(self, envelope):
         if envelope and type(Envelope()) == type(envelope):
-            if envelope.message and envelope.address :
+            if envelope.message and envelope.address:
                 return True
         return False
 
@@ -67,6 +68,26 @@ class Conversation(Thread):
             remaining_sends -= 1
 
             self.com_system.sendMessage(outgoing_envelope)
+
+            if self._incoming_messages.empty():
+                time.sleep(self.timeout)
+
+            try:
+                incoming_envelope = self._incoming_messages.get(block=False)
+            except queue.Empty:
+                incoming_envelope = None
+
+            if not incoming_envelope or not self._is_envelope_valid(incoming_envelope):
+                incoming_envelope = None
+
+        return incoming_envelope
+
+    def _wait_for_response(self):
+        incoming_envelope = None
+
+        remaining_sends = self.max_retry
+        while remaining_sends > 0 and not incoming_envelope:
+            remaining_sends -= 1
 
             if self._incoming_messages.empty():
                 time.sleep(self.timeout)

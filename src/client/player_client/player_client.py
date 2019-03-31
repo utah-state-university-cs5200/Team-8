@@ -3,7 +3,7 @@ from threading import Thread
 from src.communications.communicator.tcp.tcp_communicator import TCPCommunicator
 from src.communications.communicator.udp.udp_communicator import UDPCommunicator
 from src.communications.conversation.conversation_dictionary import ConversationDictionary
-from src.communications.conversation.conversation_factory import ConversationFactory
+from src.client.conversations.conversation_factory import ConversationFactory
 from src.server.dispatcher import Dispatcher
 
 

@@ -1,0 +1,3 @@
+
+class ConversationException(Exception):
+    pass

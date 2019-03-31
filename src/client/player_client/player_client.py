@@ -20,15 +20,40 @@ class PlayerClient(Client):
 
     def keeper_submit_word(self, word):
         """Secret keeper submits a new word"""
-        pass
+        submit_word_conversation = self.conversation_factory.build(
+            conversation_type_id=KEEPER_WORD_SUBMIT,
+            conversation_id=self.getNextConversationID(),
+            remote_endpoint=self.serverUDPAddress,
+            player_id=self.player.id,
+            new_word=word
+        )
+        submit_word_conversation.start()
+        self.conversation_dict.add(submit_word_conversation)
 
-    def keeper_block(self):
+    def keeper_block(self, contact_id):
         """Secret keeper blocks on a contact"""
-        pass
+        keeper_block_conversation = self.conversation_factory.build(
+            conversation_type_id=KEEPER_BLOCK,
+            conversation_id=self.getNextConversationID(),
+            remote_endpoint=self.serverUDPAddress,
+            player_id=self.player.id,
+            contact_id=contact_id
 
-    def keeper_call(self):
+        )
+        keeper_block_conversation.start()
+        self.conversation_dict.add(keeper_block_conversation)
+
+    def keeper_call(self, contact_id):
         """Secret keeper calls on a contact"""
-        pass
+        keeper_call_conversation = self.conversation_factory.build(
+            conversation_type_id=KEEPER_CALL,
+            conversation_id=self.getNextConversationID(),
+            remote_endpoint=self.serverUDPAddress,
+            player_id=self.player.id,
+            contact_id=contact_id
+        )
+        keeper_call_conversation.start()
+        self.conversation_dict.add(keeper_call_conversation)
 
     def give_clue(self, clue):
         """A player submits a clue for the word"""

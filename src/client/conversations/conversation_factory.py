@@ -6,6 +6,7 @@ from src.client.conversations.join_game_initiator_conversation import JoinGameIn
 from src.client.conversations.new_game_initiator_conversation import NewGameInitiatorConversation
 from src.client.conversations.set_secret_word_initiator_conversation import SetSecretWordInitiatorConversation
 from src.client.conversations.submit_guess_initiator_conversation import SubmitGuessInitiatorConversation
+from src.client.conversations.block_contact_responder_conversation import BlockContactResponderConversation
 
 
 class ConversationFactory(ConversationFactory):
@@ -16,5 +17,6 @@ class ConversationFactory(ConversationFactory):
             JOIN_GAME_INITIATOR_CONVERSATION: JoinGameInitiatorConversation,
             NEW_GAME_INITIATOR_CONVERSATION: NewGameInitiatorConversation,
             SET_SECRET_WORD_INITIATOR_CONVERSATION: SetSecretWordInitiatorConversation,
-            SUBMIT_GUESS_INITIATOR_CONVERSATION: SubmitGuessInitiatorConversation
+            SUBMIT_GUESS_INITIATOR_CONVERSATION: SubmitGuessInitiatorConversation,
+            BLOCK_CONTACT_RESPONDER_CONVERSATION: BlockContactResponderConversation
         }

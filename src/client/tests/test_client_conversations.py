@@ -126,11 +126,11 @@ class TestClientConversations(unittest.TestCase):
                                                       message_id=1,
                                                       sender_id=2,
                                                       player_alias='The Best Player Ever',
-                                                      timeout=1,
+                                                      timeout=.1,
                                                       max_retry=3)
 
         conv.start()
-        time.sleep(1)
+        time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_ASSIGN_ID,
                                        message_id=2,
@@ -140,7 +140,7 @@ class TestClientConversations(unittest.TestCase):
                                        player_id=2)
         conv.process(Envelope(message=message, address=('192.0.0.1', 4444)))
 
-        time.sleep(1)
+        time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_GAME_LIST,
                                        message_id=2,
@@ -150,7 +150,7 @@ class TestClientConversations(unittest.TestCase):
                                        game_list='a game')
         conv.process(Envelope(message=message, address=('192.0.0.1', 4444)))
 
-        time.sleep(1)
+        time.sleep(.1)
         conv.cleanup()
         self.assertEqual(conv._possible_state, PossibleState.SUCCEEDED)
 
@@ -163,12 +163,12 @@ class TestClientConversations(unittest.TestCase):
                                                       sender_id=2,
                                                       clue_id=3,
                                                       guess='A Guess',
-                                                      timeout=1,
+                                                      timeout=.1,
                                                       max_retry=3)
 
         conv.start()
 
-        time.sleep(1)
+        time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_CONTACT_ALERT,
                                        message_id=2,
@@ -177,7 +177,7 @@ class TestClientConversations(unittest.TestCase):
                                        clue_id=1)
         conv.process(Envelope(message=message, address=('192.0.0.1', 4444)))
 
-        time.sleep(1)
+        time.sleep(.1)
         conv.cleanup()
         self.assertEqual(conv._possible_state, PossibleState.SUCCEEDED)
 
@@ -191,12 +191,12 @@ class TestClientConversations(unittest.TestCase):
                                                       game_id=2,
                                                       player_id=3,
                                                       player_alias='An Alias',
-                                                      timeout=1,
+                                                      timeout=.1,
                                                       max_retry=3)
 
         conv.start()
 
-        time.sleep(1)
+        time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_GAME_SERVER_DEF,
                                        message_id=2,
@@ -206,7 +206,7 @@ class TestClientConversations(unittest.TestCase):
                                        game_id=1)
         conv.process(Envelope(message=message, address=('192.0.0.1', 4444)))
 
-        time.sleep(1)
+        time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_GAME_STATE,
                                        message_id=2,
@@ -215,7 +215,7 @@ class TestClientConversations(unittest.TestCase):
                                        message_status=0)
         conv.process(Envelope(message=message, address=('192.0.0.1', 4444)))
 
-        time.sleep(1)
+        time.sleep(.1)
         conv.cleanup()
         self.assertEqual(conv._possible_state, PossibleState.SUCCEEDED)
 
@@ -226,12 +226,12 @@ class TestClientConversations(unittest.TestCase):
                                                       remote_endpoint=self.remote_endpoint,
                                                       message_id=1,
                                                       sender_id=2,
-                                                      timeout=1,
+                                                      timeout=.1,
                                                       max_retry=3)
 
         conv.start()
 
-        time.sleep(1)
+        time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_GAME_SERVER_DEF,
                                        message_id=2,
@@ -241,7 +241,7 @@ class TestClientConversations(unittest.TestCase):
                                        game_id=1)
         conv.process(Envelope(message=message, address=('192.0.0.1', 4444)))
 
-        time.sleep(1)
+        time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_GAME_STATE,
                                        message_id=2,
@@ -250,7 +250,7 @@ class TestClientConversations(unittest.TestCase):
                                        message_status=0)
         conv.process(Envelope(message=message, address=('192.0.0.1', 4444)))
 
-        time.sleep(1)
+        time.sleep(.1)
         conv.cleanup()
         self.assertEqual(conv._possible_state, PossibleState.SUCCEEDED)
 
@@ -263,12 +263,12 @@ class TestClientConversations(unittest.TestCase):
                                                       sender_id=2,
                                                       player_id=1,
                                                       secret_word='It\'s a secret',
-                                                      timeout=1,
+                                                      timeout=.1,
                                                       max_retry=3)
 
         conv.start()
 
-        time.sleep(1)
+        time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_ACK,
                                        message_id=2,
@@ -277,7 +277,7 @@ class TestClientConversations(unittest.TestCase):
                                        message_status=0)
         conv.process(Envelope(message=message, address=('192.0.0.1', 4444)))
 
-        time.sleep(1)
+        time.sleep(.1)
         conv.cleanup()
         self.assertEqual(conv._possible_state, PossibleState.SUCCEEDED)
 
@@ -290,12 +290,12 @@ class TestClientConversations(unittest.TestCase):
                                                       sender_id=2,
                                                       word='A word',
                                                       clue='A clue',
-                                                      timeout=1,
+                                                      timeout=.1,
                                                       max_retry=3)
 
         conv.start()
 
-        time.sleep(1)
+        time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_ACK,
                                        message_id=2,
@@ -304,6 +304,26 @@ class TestClientConversations(unittest.TestCase):
                                        message_status=0)
         conv.process(Envelope(message=message, address=('192.0.0.1', 4444)))
 
-        time.sleep(1)
+        time.sleep(.1)
+        conv.cleanup()
+        self.assertEqual(conv._possible_state, PossibleState.SUCCEEDED)
+
+    def testBlockContactResponderConversation(self):
+        message = MessageFactory.build(message_type_id=MESSAGE_ID_CONTACT_ALERT,
+                                       message_id=1,
+                                       sender_id=2,
+                                       clue_id=1)
+        message.conversation_id = 1
+        envelope = Envelope(message=message, address=('192.0.0.1', 4444))
+
+        conv = self.client_conversation_factory.build(conversation_type_id=BLOCK_CONTACT_RESPONDER_CONVERSATION,
+                                                      com_system=self.client_udp_communicator,
+                                                      incoming_envelope=envelope,
+                                                      timeout=.1,
+                                                      max_retry=3)
+
+        conv.start()
+
+        time.sleep(.1)
         conv.cleanup()
         self.assertEqual(conv._possible_state, PossibleState.SUCCEEDED)

@@ -8,12 +8,12 @@ class ResponderConversation(Conversation):
 
     :note: Specializations must implement _execute_details()
     """
-    def __init__(self, com_system, incoming_envelop, *args, **kwargs):
+    def __init__(self, com_system, incoming_envelope, *args, **kwargs):
         super().__init__(com_system, *args, **kwargs)
-        self.incoming_envelop = incoming_envelop
+        self.incoming_envelope = incoming_envelope
 
-        if self.incoming_envelop and self._is_envelope_valid(self.incoming_envelop):
-            self.conversation_id = self.incoming_envelop.message.conversation_id
-            self.remote_endpoint = self.incoming_envelop.address
+        if self.incoming_envelope and self._is_envelope_valid(self.incoming_envelope):
+            self.conversation_id = self.incoming_envelope.message.conversation_id
+            self.remote_endpoint = self.incoming_envelope.address
         else:
             self._possible_state = PossibleState.FAILED

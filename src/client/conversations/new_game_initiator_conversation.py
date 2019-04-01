@@ -12,7 +12,9 @@ class NewGameInitiatorConversation(InitiatorConversation):
 
     def _create_first_message(self, kwargs):
         try:
-            return MessageFactory.build(message_type_id=MESSAGE_ID_NEW_GAME)
+            return MessageFactory.build(message_type_id=MESSAGE_ID_NEW_GAME,
+                                        message_id=kwargs['message_id'],
+                                        sender_id=kwargs['sender_id'])
         except KeyError or MessageException:
             return None
 

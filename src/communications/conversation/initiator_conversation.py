@@ -15,17 +15,17 @@ class InitiatorConversation(Conversation):
         self.remote_endpoint = remote_endpoint
 
         first_message = self._create_first_message(kwargs)
-        self.first_envelop = Envelope(message=first_message, address=self.remote_endpoint)
+        self.first_envelope = Envelope(message=first_message, address=self.remote_endpoint)
 
     def _execute_details(self):
-        envelope = self._do_reliable_request(self.first_envelop)
+        envelope = self._do_reliable_request(self.first_envelope)
 
         if not envelope:
             print('no response :(')
         else:
             self._process_valid_response(envelope)
 
-    def _create_first_message(self):
+    def _create_first_message(self, kwargs):
         raise NotImplementedError
 
     def _process_valid_response(self, envelope):

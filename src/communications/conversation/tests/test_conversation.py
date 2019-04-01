@@ -13,33 +13,32 @@ from src.communications.communicator.udp.udp_communicator import UDPCommunicator
 
 class TestConversation(unittest.TestCase):
     def setUp(self):
-        pass
+        self.remote_endpoint = ('172.0.0.10', 9999)
+
+        self.mock_client = Mock()
+        self.mock_client.alive = True
+        self.mock_client.enqueueTask = lambda message: message
+
+        self.client_conversation_factory = ConversationFactory()
+        self.client_udp_communicator = UDPCommunicator(dispatcher=self.mock_client)
 
     def tearDown(self):
-        pass
+        self.client_udp_communicator.cleanup()
 
     def testConversationFactory(self):
-        conversation_id = 6666
-        remote_endpoint = ('172.0.0.10', 9999)
+        conversation_id = 1111
         timeout = 1
         max_retry = 5
 
-        mock_client = Mock()
-        mock_client.alive = True
-        mock_client.enqueueTask = lambda message: message
-
-        client_conversation_factory = ConversationFactory()
-        client_udp_communicator = UDPCommunicator(dispatcher=mock_client)
-
-        hello_initiator_conversation = client_conversation_factory.build(conversation_type_id=HELLO_INITIATOR_CONVERSATION,
-                                                                         com_system=client_udp_communicator,
-                                                                         conversation_id=conversation_id,
-                                                                         remote_endpoint=remote_endpoint,
-                                                                         player_alias="my alias",
-                                                                         message_id=1,
-                                                                         sender_id=2,
-                                                                         timeout=timeout,
-                                                                         max_retry=max_retry)
+        hello_initiator_conversation = self.client_conversation_factory.build(conversation_type_id=HELLO_INITIATOR_CONVERSATION,
+                                                                              com_system=self.client_udp_communicator,
+                                                                              conversation_id=conversation_id,
+                                                                              remote_endpoint=self.remote_endpoint,
+                                                                              player_alias="my alias",
+                                                                              message_id=1,
+                                                                              sender_id=2,
+                                                                              timeout=timeout,
+                                                                              max_retry=max_retry)
 
         hello_initiator_conversation.start()
         time.sleep(1)
@@ -47,13 +46,11 @@ class TestConversation(unittest.TestCase):
         hello_initiator_conversation.process(Envelope(message='Hello World 1', address=('192.0.0.1', 4444)))
 
         self.assertEqual(hello_initiator_conversation.conversation_id, conversation_id)
-        self.assertEqual(hello_initiator_conversation.remote_endpoint, remote_endpoint)
+        self.assertEqual(hello_initiator_conversation.remote_endpoint, self.remote_endpoint)
         self.assertEqual(hello_initiator_conversation.timeout, timeout)
         self.assertEqual(hello_initiator_conversation.max_retry, max_retry)
 
-        mock_client.alive = False
         hello_initiator_conversation.cleanup()
-        client_udp_communicator.cleanup()
 
     def testConversationDictionary(self):
         class TestConv:
@@ -106,22 +103,15 @@ class TestConversation(unittest.TestCase):
 
     def testConversationWithDictionary(self):
         conversation_id = 6666
-        remote_endpoint = ('172.0.0.10', 9999)
         timeout = 1
 
-        mock_client = Mock()
-        mock_client.alive = True
-        mock_client.enqueueTask = lambda message: message
-
         conversation_dict = ConversationDictionary()
-        client_conversation_factory = ConversationFactory()
-        client_udp_communicator = UDPCommunicator(dispatcher=mock_client)
 
-        hello_initiator_conversation = client_conversation_factory.build(
+        hello_initiator_conversation = self.client_conversation_factory.build(
             conversation_type_id=HELLO_INITIATOR_CONVERSATION,
-            com_system=client_udp_communicator,
+            com_system=self.client_udp_communicator,
             conversation_id=conversation_id,
-            remote_endpoint=remote_endpoint,
+            remote_endpoint=self.remote_endpoint,
             player_alias="my alias",
             timeout=timeout)
         hello_initiator_conversation.start()
@@ -138,7 +128,4 @@ class TestConversation(unittest.TestCase):
 
         self.assertEqual(conversation_dict.get(hello_initiator_conversation.conversation_id), None)
 
-        mock_client.alive = False
-        hello_initiator_conversation.cleanup()
-        client_udp_communicator.cleanup()
         conversation_dict.cleanup()

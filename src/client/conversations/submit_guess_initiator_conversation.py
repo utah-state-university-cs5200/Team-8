@@ -13,6 +13,8 @@ class SubmitGuessInitiatorConversation(InitiatorConversation):
     def _create_first_message(self, kwargs):
         try:
             return MessageFactory.build(message_type_id=MESSAGE_ID_SUBMIT_GUESS,
+                                        message_id=kwargs['message_id'],
+                                        sender_id=kwargs['sender_id'],
                                         player_id=kwargs['player_id'],
                                         word=kwargs['word'],
                                         clue=kwargs['clue'])

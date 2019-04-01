@@ -13,6 +13,8 @@ class SetSecretWordInitiatorConversation(InitiatorConversation):
     def _create_first_message(self, kwargs):
         try:
             return MessageFactory.build(message_type_id=MESSAGE_ID_SET_SECRET_WORD,
+                                        message_id=kwargs['message_id'],
+                                        sender_id=kwargs['sender_id'],
                                         player_id=kwargs['player_id'],
                                         secret_word=kwargs['secret_word'])
         except KeyError or MessageException:

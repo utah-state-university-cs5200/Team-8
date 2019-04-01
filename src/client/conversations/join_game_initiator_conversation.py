@@ -13,6 +13,8 @@ class JoinGameInitiatorConversation(InitiatorConversation):
     def _create_first_message(self, kwargs):
         try:
             return MessageFactory.build(message_type_id=MESSAGE_ID_JOIN_GAME,
+                                        message_id=kwargs['message_id'],
+                                        sender_id=kwargs['sender_id'],
                                         game_id=kwargs['game_id'],
                                         player_id=kwargs['player_id'],
                                         player_alias=kwargs['player_alias'])

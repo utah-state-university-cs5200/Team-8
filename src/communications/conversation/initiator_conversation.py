@@ -2,14 +2,17 @@ from src.communications.conversation.conversation import Conversation
 from src.communications.conversation.envelope import Envelope
 
 
-# Abstract class
-#   you need to implement the following methods
-#       _execute_details
-#       _create_first_message
 class InitiatorConversation(Conversation):
+    """
+    Parent class must be specialized
+
+    :note: Specializations must implement _create_first_message() and _process_valid_response()
+    """
     def __init__(self, com_system, conversation_id, remote_endpoint, *args, **kwargs):
-        super().__init__(com_system, conversation_id, remote_endpoint, *args, **kwargs)
+        super().__init__(com_system, *args, **kwargs)
         self.first_envelop = None
+        self.conversation_id = conversation_id
+        self.remote_endpoint = remote_endpoint
 
         first_message = self._create_first_message(kwargs)
         self.first_envelop = Envelope(message=first_message, address=self.remote_endpoint)

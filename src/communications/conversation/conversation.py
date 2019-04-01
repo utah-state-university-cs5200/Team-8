@@ -16,19 +16,19 @@ class PossibleState(Enum):
     SUCCEEDED = 4
 
 
-# Abstract class
-#   you need to implement the following methods
-#       _execute_details
 class Conversation(Thread):
-    def __init__(self, com_system, conversation_id, remote_endpoint, *args, **kwargs):
+    """
+    Parent Conversation class to be specialized
+
+    :note: Specializations must implement _execute_details()
+    """
+    def __init__(self, com_system, *args, **kwargs):
         super().__init__()
         self._alive = True
         self._incoming_messages = queue.Queue()
         self._possible_state = PossibleState.NOT_INITIALIZED
 
         self.com_system = com_system
-        self.conversation_id = conversation_id
-        self.remote_endpoint = remote_endpoint
         self.timeout = None
         self.max_retry = None
 
@@ -39,28 +39,30 @@ class Conversation(Thread):
         self._execute_details()
         self.cleanup()
 
+    def _execute_details(self):
+        raise NotImplementedError
+
     def process(self, envelope):
+        """
+        Add incoming envelope to internal message queue
+
+        :param envelope:
+        :return:
+        """
         if self._is_envelope_valid(envelope):
             self._incoming_messages.put(envelope)
         else:
             print('Invalid incoming envelope')
 
-    def is_alive(self):
-        if self._alive and not self._possible_state == PossibleState.FAILED:
-            return True
-        else:
-            return False
-
-    def _execute_details(self):
-        raise NotImplementedError
-
-    def _is_envelope_valid(self, envelope):
-        if envelope and type(Envelope()) == type(envelope):
-            if envelope.message and envelope.address:
-                return True
-        return False
-
     def _do_reliable_request(self, outgoing_envelope):
+        """
+        Implements the Reliable Request (RR) messaging protocol.
+        Will retry as many times as specified in self.max_retry.
+        Waits self.timeout seconds between retries.
+
+        :param outgoing_envelope:
+        :return: first incoming envelope found on the message queue
+        """
         incoming_envelope = None
 
         remaining_sends = self.max_retry
@@ -83,6 +85,13 @@ class Conversation(Thread):
         return incoming_envelope
 
     def _wait_for_response(self):
+        """
+        Waits for first message on message queue.
+        Will retry as many times as specified in self.max_retry.
+        Waits self.timeout seconds between retries.
+
+        :return incoming_envelope: first incoming envelope found on the message queue
+        """
         incoming_envelope = None
 
         remaining_sends = self.max_retry
@@ -101,6 +110,23 @@ class Conversation(Thread):
                 incoming_envelope = None
 
         return incoming_envelope
+
+    @staticmethod
+    def _is_envelope_valid(envelope):
+        """
+        :param envelope: Envelope
+        :return: Bool
+        """
+        if envelope and type(Envelope()) == type(envelope):
+            if envelope.message and envelope.address:
+                return True
+        return False
+
+    def is_alive(self):
+        if self._alive and not self._possible_state == PossibleState.FAILED:
+            return True
+        else:
+            return False
 
     def _init_max_retry(self, kwargs):
         try:

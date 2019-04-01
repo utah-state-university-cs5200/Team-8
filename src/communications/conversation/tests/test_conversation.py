@@ -1,14 +1,12 @@
 import time
 import unittest
-import threading
-import queue
 
 from unittest.mock import Mock
 
-from src.communications.conversation.constants import *
 from src.communications.conversation.envelope import Envelope
-from src.communications.conversation.conversation_factory import ConversationFactory
 from src.communications.conversation.conversation_dictionary import ConversationDictionary
+from src.communications.conversation.tests.constants import *
+from src.communications.conversation.tests.conversation_factory import ConversationFactory
 
 from src.communications.communicator.udp.udp_communicator import UDPCommunicator
 
@@ -31,20 +29,22 @@ class TestConversation(unittest.TestCase):
         mock_client.enqueueTask = lambda message: message
 
         client_conversation_factory = ConversationFactory()
-        client_udp_communicator = UDPCommunicator(client=mock_client)
+        client_udp_communicator = UDPCommunicator(dispatcher=mock_client)
 
         hello_initiator_conversation = client_conversation_factory.build(conversation_type_id=HELLO_INITIATOR_CONVERSATION,
                                                                          com_system=client_udp_communicator,
                                                                          conversation_id=conversation_id,
                                                                          remote_endpoint=remote_endpoint,
                                                                          player_alias="my alias",
+                                                                         message_id=1,
+                                                                         sender_id=2,
                                                                          timeout=timeout,
                                                                          max_retry=max_retry)
 
         hello_initiator_conversation.start()
         time.sleep(1)
         # Fake an incoming message from the dispatcher
-        hello_initiator_conversation.process(Envelope(message='Hello World', address=('192.0.0.1', 4444)))
+        hello_initiator_conversation.process(Envelope(message='Hello World 1', address=('192.0.0.1', 4444)))
 
         self.assertEqual(hello_initiator_conversation.conversation_id, conversation_id)
         self.assertEqual(hello_initiator_conversation.remote_endpoint, remote_endpoint)
@@ -115,7 +115,7 @@ class TestConversation(unittest.TestCase):
 
         conversation_dict = ConversationDictionary()
         client_conversation_factory = ConversationFactory()
-        client_udp_communicator = UDPCommunicator(client=mock_client)
+        client_udp_communicator = UDPCommunicator(dispatcher=mock_client)
 
         hello_initiator_conversation = client_conversation_factory.build(
             conversation_type_id=HELLO_INITIATOR_CONVERSATION,
@@ -132,7 +132,7 @@ class TestConversation(unittest.TestCase):
 
         time.sleep(1)
         # Fake an incoming message from the dispatcher
-        hello_initiator_conversation.process(Envelope(message='Hello World', address=('192.0.0.1', 4444)))
+        hello_initiator_conversation.process(Envelope(message='Hello World 2', address=('192.0.0.1', 4444)))
 
         time.sleep(5)
 

@@ -36,6 +36,7 @@ class Conversation(Thread):
         self._init_max_retry(kwargs)
 
     def run(self):
+        self._possible_state = PossibleState.WORKING
         self._execute_details()
         self.cleanup()
 

@@ -35,13 +35,15 @@ class ConnectToLobbyInitiatorConversation(InitiatorConversation):
             self._possible_state = PossibleState.FAILED
 
         while self.is_alive():
-            refresh_game_list_message = MessageFactory.build(message_type_id=MESSAGE_ID_REFRESH_GAME_LIST)
+            refresh_game_list_message = MessageFactory.build(message_type_id=MESSAGE_ID_REFRESH_GAME_LIST,
+                                                             message_id=1,
+                                                             sender_id=1)
             envelope = self._do_reliable_request(refresh_game_list_message)
 
             if envelope and envelope.message.message_type_id == MESSAGE_ID_GAME_LIST:
                 # TODO: process the GameList message
                 pass
-            else:
-                self._possible_state = PossibleState.FAILED
+            # else:
+            #     self._possible_state = PossibleState.FAILED
 
         self._possible_state = PossibleState.SUCCEEDED

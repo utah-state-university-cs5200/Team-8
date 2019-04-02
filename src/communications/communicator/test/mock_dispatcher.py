@@ -2,5 +2,5 @@ class MockDispatcher:
     def __init__(self):
         self.received = []
 
-    def processEnvelope(self, envelope):
+    def process(self, envelope):
         self.received.append(envelope)

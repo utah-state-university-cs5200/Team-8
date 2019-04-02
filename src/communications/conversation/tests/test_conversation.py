@@ -1,7 +1,5 @@
 import time
 import unittest
-import threading
-import queue
 
 from unittest.mock import Mock
 

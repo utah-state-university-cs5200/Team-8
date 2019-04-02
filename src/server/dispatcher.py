@@ -4,6 +4,6 @@ class Dispatcher:
         self.conversation_dict = conversation_dict
         self.conversation_factory = conversation_factory
 
-    def processEnvelope(self, envelope):
+    def process(self, envelope):
         if len(envelope.message) != 0:
             print("Received envelope from {} containing {}".format(envelope.address, envelope.message)) # TODO: process an envelope

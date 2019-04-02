@@ -7,8 +7,8 @@ from src.communications.conversation.envelope import Envelope
 #       _execute_details
 #       _create_first_message
 class InitiatorConversation(Conversation):
-    def __init__(self, com_system, conversation_id, remote_endpoint, *args, **kwargs):
-        super().__init__(com_system, conversation_id, remote_endpoint, *args, **kwargs)
+    def __init__(self, conversation_id, remote_endpoint, *args, **kwargs):
+        super().__init__(conversation_id, remote_endpoint, *args, **kwargs)
         self.first_envelop = None
 
         first_message = self._create_first_message(kwargs)

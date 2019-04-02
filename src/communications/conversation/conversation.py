@@ -108,3 +108,4 @@ class Conversation(Thread):
 
     def cleanup(self):
         self._alive = False
+        self.com_system.cleanup()

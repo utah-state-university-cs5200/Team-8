@@ -29,10 +29,8 @@ class TestConversation(unittest.TestCase):
         mock_client.enqueueTask = lambda message: message
 
         client_conversation_factory = ConversationFactory()
-        client_udp_communicator = UDPCommunicator(client=mock_client)
 
         hello_initiator_conversation = client_conversation_factory.build(conversation_type_id=HELLO_INITIATOR_CONVERSATION,
-                                                                         com_system=client_udp_communicator,
                                                                          conversation_id=conversation_id,
                                                                          remote_endpoint=remote_endpoint,
                                                                          player_alias="my alias",
@@ -51,7 +49,6 @@ class TestConversation(unittest.TestCase):
 
         mock_client.alive = False
         hello_initiator_conversation.cleanup()
-        client_udp_communicator.cleanup()
 
     def testConversationDictionary(self):
         class TestConv:
@@ -113,11 +110,9 @@ class TestConversation(unittest.TestCase):
 
         conversation_dict = ConversationDictionary()
         client_conversation_factory = ConversationFactory()
-        client_udp_communicator = UDPCommunicator(client=mock_client)
 
         hello_initiator_conversation = client_conversation_factory.build(
             conversation_type_id=HELLO_INITIATOR_CONVERSATION,
-            com_system=client_udp_communicator,
             conversation_id=conversation_id,
             remote_endpoint=remote_endpoint,
             player_alias="my alias",
@@ -138,5 +133,4 @@ class TestConversation(unittest.TestCase):
 
         mock_client.alive = False
         hello_initiator_conversation.cleanup()
-        client_udp_communicator.cleanup()
         conversation_dict.cleanup()

@@ -36,12 +36,9 @@ class Conversation(Thread):
         self.max_retry = None
 
         self._initComSystem()
+        self._initWorker(kwargs)
         self._init_timeout(kwargs)
         self._init_max_retry(kwargs)
-
-    def _initComSystem(self):
-        self.com_system = None
-        self.com_system = UDPCommunicator(address=self.remote_endpoint, dispatcher=self)
 
     def run(self):
         self._execute_details()
@@ -86,6 +83,16 @@ class Conversation(Thread):
                 incoming_envelope = None
 
         return incoming_envelope
+
+    def _initComSystem(self):
+        self.com_system = None
+        self.com_system = UDPCommunicator(address=self.remote_endpoint, dispatcher=self)
+
+    def _initWorker(self, kwargs):
+        try:
+            self.worker = kwargs['worker']
+        except KeyError:
+            self.worker = None
 
     def _init_max_retry(self, kwargs):
         try:

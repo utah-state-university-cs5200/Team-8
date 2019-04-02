@@ -65,8 +65,8 @@ class Communicator:
         :param task: Task/message to be processed by the dispatcher
         :return:
         """
-        envelope = Envelope(message=task, address = self.address)
-        self.dispatcher.processEnvelope(envelope)
+        envelope = Envelope(message=task, address=self.address)
+        self.dispatcher.process(envelope)
 
     def cleanup(self):
         """

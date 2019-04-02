@@ -3,6 +3,8 @@ import queue
 
 from enum import Enum
 from threading import Thread
+
+from src.communications.communicator.udp.udp_communicator import UDPCommunicator
 from src.communications.conversation.envelope import Envelope
 
 DEFAULT_TIMEOUT = 30
@@ -22,18 +24,24 @@ class Conversation(Thread):
 
     :note: Specializations must implement _execute_details()
     """
-    def __init__(self, com_system, *args, **kwargs):
+    def __init__(self, conversation_id, remote_endpoint, *args, **kwargs):
         super().__init__()
         self._alive = True
         self._incoming_messages = queue.Queue()
         self._possible_state = PossibleState.NOT_INITIALIZED
 
-        self.com_system = com_system
+        self.conversation_id = conversation_id
+        self.remote_endpoint = remote_endpoint
         self.timeout = None
         self.max_retry = None
 
+        self._initComSystem()
         self._init_timeout(kwargs)
         self._init_max_retry(kwargs)
+
+    def _initComSystem(self):
+        self.com_system = None
+        self.com_system = UDPCommunicator(address=self.remote_endpoint, dispatcher=self)
 
     def run(self):
         self._possible_state = PossibleState.WORKING

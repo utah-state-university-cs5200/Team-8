@@ -3,6 +3,7 @@ import hypothesis
 
 from src.communications.messages.constants import MESSAGE_ID_HELLO, MESSAGE_ID_SUBMIT_GUESS, MESSAGE_ID_ASSIGN_ID, \
     MESSAGE_STATUS_SUCCESS
+from src.communications.messages.encoder_decoder import encode, decode
 from src.communications.messages.message_exception import MessageException
 from src.communications.messages.message_factory import MessageFactory
 
@@ -74,10 +75,7 @@ class TestMessageFactory(unittest.TestCase):
             prop['message_type_id'] = id_val
             # print(prop)
             message_instance = MessageFactory.build(**prop)
-            byte_string = message_instance.encode()
-            result_message = MessageFactory.fromByteString(byte_string)
-            byte_string2 = result_message.encode()
+            byte_string = encode(message_instance)
+            result_message = decode(byte_string)
+            byte_string2 = encode(result_message)
             self.assertEqual(byte_string, byte_string2)
-
-if __name__ == "__main__":
-    unittest.main()

@@ -8,8 +8,8 @@ class ResponderConversation(Conversation):
 
     :note: Specializations must implement _execute_details()
     """
-    def __init__(self, com_system, incoming_envelope, *args, **kwargs):
-        super().__init__(com_system, *args, **kwargs)
+    def __init__(self, incoming_envelope, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.incoming_envelope = incoming_envelope
 
         if self.incoming_envelope and self._is_envelope_valid(self.incoming_envelope):

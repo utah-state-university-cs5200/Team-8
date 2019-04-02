@@ -24,26 +24,22 @@ class Conversation(Thread):
 
     :note: Specializations must implement _execute_details()
     """
-    def __init__(self, conversation_id, remote_endpoint, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__()
         self._alive = True
         self._incoming_messages = queue.Queue()
         self._possible_state = PossibleState.NOT_INITIALIZED
 
-        self.conversation_id = conversation_id
-        self.remote_endpoint = remote_endpoint
+        self.conversation_id = None
+        self.remote_endpoint = None
         self.timeout = None
         self.max_retry = None
 
-        self._initComSystem()
         self._init_timeout(kwargs)
         self._init_max_retry(kwargs)
 
-    def _initComSystem(self):
-        self.com_system = None
-        self.com_system = UDPCommunicator(address=self.remote_endpoint, dispatcher=self)
-
     def run(self):
+        self._initComSystem()
         self._possible_state = PossibleState.WORKING
         self._execute_details()
         self.cleanup()
@@ -149,5 +145,12 @@ class Conversation(Thread):
         except KeyError:
             self.timeout = DEFAULT_TIMEOUT
 
+    def _initComSystem(self):
+        self.com_system = None
+        self.com_system = UDPCommunicator(address=self.remote_endpoint, dispatcher=self)
+
     def cleanup(self):
         self._alive = False
+
+        if self.com_system:
+            self.com_system.cleanup()

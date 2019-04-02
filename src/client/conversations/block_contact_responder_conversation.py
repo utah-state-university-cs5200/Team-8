@@ -6,8 +6,8 @@ from src.communications.messages.message_exception import MessageException
 
 
 class BlockContactResponderConversation(ResponderConversation):
-    def __init__(self, com_system, incoming_envelope, *args, **kwargs):
-        super().__init__(com_system, incoming_envelope, *args, **kwargs)
+    def __init__(self, incoming_envelope, *args, **kwargs):
+        super().__init__(incoming_envelope, *args, **kwargs)
 
     def _execute_details(self):
         print('executing details')

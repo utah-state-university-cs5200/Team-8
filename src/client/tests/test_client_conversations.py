@@ -10,30 +10,22 @@ from src.communications.messages.constants import *
 from src.communications.messages.message_factory import MessageFactory
 from src.communications.conversation.envelope import Envelope
 from src.communications.conversation.conversation import PossibleState
-from src.communications.communicator.udp.udp_communicator import UDPCommunicator
 
 
 class TestClientConversations(unittest.TestCase):
     def setUp(self):
-        self.remote_endpoint = ('172.0.0.10', 9999)
-
-        self.mock_client = Mock()
-        self.mock_client.alive = True
-        self.mock_client.enqueueTask = lambda message: message
-
         self.client_conversation_factory = ConversationFactory()
-        self.client_udp_communicator = UDPCommunicator(dispatcher=self.mock_client)
 
     def tearDown(self):
-        self.client_udp_communicator.cleanup()
+        pass
 
     def testClientConversationFactory(self):
         conversation_id = 1111
 
+        remote_endpoint = ('172.0.0.10', 5000)
         conv_1 = self.client_conversation_factory.build(conversation_type_id=CONNECT_TO_LOBBY_INITIATOR_CONVERSATION,
-                                                        com_system=self.client_udp_communicator,
                                                         conversation_id=conversation_id,
-                                                        remote_endpoint=self.remote_endpoint,
+                                                        remote_endpoint=remote_endpoint,
                                                         message_id=1,
                                                         sender_id=2,
                                                         player_alias='The Best Player Ever')
@@ -43,10 +35,10 @@ class TestClientConversations(unittest.TestCase):
         self.assertEqual(conv_1.first_envelope.message.sender_id, 2)
         self.assertEqual(conv_1.first_envelope.message.player_alias, 'The Best Player Ever')
 
+        remote_endpoint = ('172.0.0.10', 5001)
         conv_2 = self.client_conversation_factory.build(conversation_type_id=DECLARE_CONTACT_INITIATOR_CONVERSATION,
-                                                        com_system=self.client_udp_communicator,
                                                         conversation_id=conversation_id,
-                                                        remote_endpoint=self.remote_endpoint,
+                                                        remote_endpoint=remote_endpoint,
                                                         message_id=1,
                                                         sender_id=2,
                                                         clue_id=10,
@@ -58,10 +50,10 @@ class TestClientConversations(unittest.TestCase):
         self.assertEqual(conv_2.first_envelope.message.clue_id, 10)
         self.assertEqual(conv_2.first_envelope.message.guess, 'This is a guess')
 
+        remote_endpoint = ('172.0.0.10', 5002)
         conv_3 = self.client_conversation_factory.build(conversation_type_id=JOIN_GAME_INITIATOR_CONVERSATION,
-                                                        com_system=self.client_udp_communicator,
                                                         conversation_id=conversation_id,
-                                                        remote_endpoint=self.remote_endpoint,
+                                                        remote_endpoint=remote_endpoint,
                                                         message_id=1,
                                                         sender_id=2,
                                                         game_id=20,
@@ -75,10 +67,10 @@ class TestClientConversations(unittest.TestCase):
         self.assertEqual(conv_3.first_envelope.message.player_id, 999)
         self.assertEqual(conv_3.first_envelope.message.player_alias, 'The Best Player Ever')
 
+        remote_endpoint = ('172.0.0.10', 5003)
         conv_4 = self.client_conversation_factory.build(conversation_type_id=NEW_GAME_INITIATOR_CONVERSATION,
-                                                        com_system=self.client_udp_communicator,
                                                         conversation_id=conversation_id,
-                                                        remote_endpoint=self.remote_endpoint,
+                                                        remote_endpoint=remote_endpoint,
                                                         message_id=1,
                                                         sender_id=2)
 
@@ -86,10 +78,10 @@ class TestClientConversations(unittest.TestCase):
         self.assertEqual(conv_4.first_envelope.message.message_id, 1)
         self.assertEqual(conv_4.first_envelope.message.sender_id, 2)
 
+        remote_endpoint = ('172.0.0.10', 5004)
         conv_5 = self.client_conversation_factory.build(conversation_type_id=SET_SECRET_WORD_INITIATOR_CONVERSATION,
-                                                        com_system=self.client_udp_communicator,
                                                         conversation_id=conversation_id,
-                                                        remote_endpoint=self.remote_endpoint,
+                                                        remote_endpoint=remote_endpoint,
                                                         message_id=1,
                                                         sender_id=2,
                                                         player_id=999,
@@ -101,10 +93,10 @@ class TestClientConversations(unittest.TestCase):
         self.assertEqual(conv_5.first_envelope.message.player_id, 999)
         self.assertEqual(conv_5.first_envelope.message.secret_word, 'Word')
 
+        remote_endpoint = ('172.0.0.10', 5005)
         conv_6 = self.client_conversation_factory.build(conversation_type_id=SUBMIT_GUESS_INITIATOR_CONVERSATION,
-                                                        com_system=self.client_udp_communicator,
                                                         conversation_id=conversation_id,
-                                                        remote_endpoint=self.remote_endpoint,
+                                                        remote_endpoint=remote_endpoint,
                                                         message_id=1,
                                                         sender_id=2,
                                                         player_id=999,
@@ -119,10 +111,10 @@ class TestClientConversations(unittest.TestCase):
         self.assertEqual(conv_6.first_envelope.message.clue, 'Clue')
 
     def testConnectToLobbyInitiatorConversation(self):
+        remote_endpoint = ('172.0.0.10', 5006)
         conv = self.client_conversation_factory.build(conversation_type_id=CONNECT_TO_LOBBY_INITIATOR_CONVERSATION,
-                                                      com_system=self.client_udp_communicator,
                                                       conversation_id=111,
-                                                      remote_endpoint=self.remote_endpoint,
+                                                      remote_endpoint=remote_endpoint,
                                                       message_id=1,
                                                       sender_id=2,
                                                       player_alias='The Best Player Ever',
@@ -155,10 +147,10 @@ class TestClientConversations(unittest.TestCase):
         self.assertEqual(conv._possible_state, PossibleState.SUCCEEDED)
 
     def testDeclareContactInitiatorConversation(self):
+        remote_endpoint = ('172.0.0.10', 5007)
         conv = self.client_conversation_factory.build(conversation_type_id=DECLARE_CONTACT_INITIATOR_CONVERSATION,
-                                                      com_system=self.client_udp_communicator,
                                                       conversation_id=111,
-                                                      remote_endpoint=self.remote_endpoint,
+                                                      remote_endpoint=remote_endpoint,
                                                       message_id=1,
                                                       sender_id=2,
                                                       clue_id=3,
@@ -182,10 +174,10 @@ class TestClientConversations(unittest.TestCase):
         self.assertEqual(conv._possible_state, PossibleState.SUCCEEDED)
 
     def testJoinGameInitiatorConversation(self):
+        remote_endpoint = ('172.0.0.10', 5008)
         conv = self.client_conversation_factory.build(conversation_type_id=JOIN_GAME_INITIATOR_CONVERSATION,
-                                                      com_system=self.client_udp_communicator,
                                                       conversation_id=111,
-                                                      remote_endpoint=self.remote_endpoint,
+                                                      remote_endpoint=remote_endpoint,
                                                       message_id=1,
                                                       sender_id=2,
                                                       game_id=2,
@@ -220,10 +212,10 @@ class TestClientConversations(unittest.TestCase):
         self.assertEqual(conv._possible_state, PossibleState.SUCCEEDED)
 
     def testNewGameInitiatorConversation(self):
+        remote_endpoint = ('172.0.0.10', 5009)
         conv = self.client_conversation_factory.build(conversation_type_id=NEW_GAME_INITIATOR_CONVERSATION,
-                                                      com_system=self.client_udp_communicator,
                                                       conversation_id=111,
-                                                      remote_endpoint=self.remote_endpoint,
+                                                      remote_endpoint=remote_endpoint,
                                                       message_id=1,
                                                       sender_id=2,
                                                       timeout=.1,
@@ -255,10 +247,10 @@ class TestClientConversations(unittest.TestCase):
         self.assertEqual(conv._possible_state, PossibleState.SUCCEEDED)
 
     def testSetSecretWordInitiatorConversation(self):
+        remote_endpoint = ('172.0.0.10', 5010)
         conv = self.client_conversation_factory.build(conversation_type_id=SET_SECRET_WORD_INITIATOR_CONVERSATION,
-                                                      com_system=self.client_udp_communicator,
                                                       conversation_id=111,
-                                                      remote_endpoint=self.remote_endpoint,
+                                                      remote_endpoint=remote_endpoint,
                                                       message_id=1,
                                                       sender_id=2,
                                                       player_id=1,
@@ -282,10 +274,10 @@ class TestClientConversations(unittest.TestCase):
         self.assertEqual(conv._possible_state, PossibleState.SUCCEEDED)
 
     def testSubmitGuessInitiatorConversation(self):
+        remote_endpoint = ('172.0.0.10', 5011)
         conv = self.client_conversation_factory.build(conversation_type_id=SUBMIT_GUESS_INITIATOR_CONVERSATION,
-                                                      com_system=self.client_udp_communicator,
                                                       conversation_id=111,
-                                                      remote_endpoint=self.remote_endpoint,
+                                                      remote_endpoint=remote_endpoint,
                                                       message_id=1,
                                                       sender_id=2,
                                                       word='A word',
@@ -314,10 +306,9 @@ class TestClientConversations(unittest.TestCase):
                                        sender_id=2,
                                        clue_id=1)
         message.conversation_id = 1
-        envelope = Envelope(message=message, address=('192.0.0.1', 4444))
+        envelope = Envelope(message=message, address=('172.0.0.10', 5012))
 
         conv = self.client_conversation_factory.build(conversation_type_id=BLOCK_CONTACT_RESPONDER_CONVERSATION,
-                                                      com_system=self.client_udp_communicator,
                                                       incoming_envelope=envelope,
                                                       timeout=.1,
                                                       max_retry=3)

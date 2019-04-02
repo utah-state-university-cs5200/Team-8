@@ -8,8 +8,8 @@ class InitiatorConversation(Conversation):
 
     :note: Specializations must implement _create_first_message() and _process_valid_response()
     """
-    def __init__(self, com_system, conversation_id, remote_endpoint, *args, **kwargs):
-        super().__init__(com_system, *args, **kwargs)
+    def __init__(self, conversation_id, remote_endpoint, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.first_envelop = None
         self.conversation_id = conversation_id
         self.remote_endpoint = remote_endpoint

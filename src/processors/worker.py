@@ -9,15 +9,27 @@ class WorkerException(Exception):
 
 
 class Worker(Thread):
-    JOB_ID_MAP = {
+    """
+    Parent worker class to be specialized. Specializations need to define their own
+    _initJobMap functions, as well as any specific functions for their domain-specific
+    jobs.
 
+    Jobs themselves are dictionaries by convention, in the form of:
+    job = {
+            'id': id_num,
+            'payload': ['param1', 'param2',..., 'paramN']
     }
-
+    Where the payload is a list of parameters to be passed into the function
+    """
     def __init__(self, master, group=None, target=None, name=None, *args, **kwargs):
         super().__init__(group, target, name, args, kwargs)
         self.alive = True
         self.master = master
         self.jobs = []
+        self._initJobMap()
+
+    def _initJobMap(self):
+        self.job_map = {}
 
     def run(self):
         while self.alive:
@@ -32,8 +44,8 @@ class Worker(Thread):
 
     def _doWork(self, job):
         try:
-            method = self.__class__.JOB_ID_MAP[job['id']]
-            method(job)
+            method = self.job_map[job['id']]
+            method(*job['payload'])
         except KeyError:
             raise WorkerException("Error: Job not defined for this worker type.")
 

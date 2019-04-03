@@ -9,6 +9,7 @@ from src.communications.messages.message_exception import MessageException
 class DeclareContactInitiatorConversation(InitiatorConversation):
     def __init__(self, conversation_id, remote_endpoint, *args, **kwargs):
         super().__init__(conversation_id, remote_endpoint, *args, **kwargs)
+        self._valid_incoming_message_types = {MESSAGE_ID_CONTACT_ALERT}
 
     def _create_first_message(self, kwargs):
         try:

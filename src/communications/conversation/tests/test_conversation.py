@@ -5,6 +5,8 @@ from src.communications.conversation.envelope import Envelope
 from src.communications.conversation.conversation_dictionary import ConversationDictionary
 from src.communications.conversation.tests.constants import *
 from src.communications.conversation.tests.conversation_factory import ConversationFactory
+from src.communications.messages.constants import MESSAGE_ID_HELLO
+from src.communications.messages.message_factory import MessageFactory
 
 
 class TestConversation(unittest.TestCase):
@@ -32,7 +34,11 @@ class TestConversation(unittest.TestCase):
         hello_initiator_conversation.start()
         time.sleep(1)
         # Fake an incoming message from the dispatcher
-        hello_initiator_conversation.process(Envelope(message='Hello World 1', address=('192.0.0.1', 4444)))
+        message = MessageFactory.build(message_type_id=MESSAGE_ID_HELLO,
+                                       message_id=1,
+                                       sender_id=2,
+                                       player_alias="my alias")
+        hello_initiator_conversation.process(Envelope(message=message, address=('192.0.0.1', 4444)))
 
         self.assertEqual(hello_initiator_conversation.conversation_id, conversation_id)
         self.assertEqual(hello_initiator_conversation.remote_endpoint, remote_endpoint)
@@ -111,7 +117,11 @@ class TestConversation(unittest.TestCase):
 
         time.sleep(1)
         # Fake an incoming message from the dispatcher
-        hello_initiator_conversation.process(Envelope(message='Hello World 2', address=('192.0.0.1', 4444)))
+        message = MessageFactory.build(message_type_id=MESSAGE_ID_HELLO,
+                                       message_id=1,
+                                       sender_id=2,
+                                       player_alias="my alias")
+        hello_initiator_conversation.process(Envelope(message=message, address=('192.0.0.1', 4445)))
 
         time.sleep(5)
 

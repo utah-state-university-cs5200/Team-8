@@ -21,7 +21,7 @@ class InitiatorConversation(Conversation):
         envelope = self._do_reliable_request(self.first_envelope)
 
         if not envelope:
-            print('no response :(')
+            pass
         else:
             self._process_valid_response(envelope)
 

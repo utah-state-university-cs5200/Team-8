@@ -142,8 +142,9 @@ class TestClientConversations(unittest.TestCase):
                                        game_list='a game')
         conv.process(Envelope(message=message, address=('192.0.0.1', 4444)))
 
-        time.sleep(.1)
         conv.cleanup()
+        time.sleep(1)
+
         self.assertEqual(conv._possible_state, PossibleState.SUCCEEDED)
 
     def testDeclareContactInitiatorConversation(self):
@@ -287,7 +288,7 @@ class TestClientConversations(unittest.TestCase):
 
         conv.start()
 
-        time.sleep(.1)
+        time.sleep(.2)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_ACK,
                                        message_id=2,

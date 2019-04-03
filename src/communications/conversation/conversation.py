@@ -28,6 +28,7 @@ class Conversation(Thread):
         super().__init__()
         self._alive = True
         self._incoming_messages = queue.Queue()
+        self._valid_incoming_message_types = set()
         self._possible_state = PossibleState.NOT_INITIALIZED
 
         self.conversation_id = None
@@ -86,12 +87,15 @@ class Conversation(Thread):
 
             if not incoming_envelope or not self._is_envelope_valid(incoming_envelope):
                 incoming_envelope = None
+            elif incoming_envelope.message.message_type_id not in self._valid_incoming_message_types:
+                # Not a message type this conversation is expecting
+                incoming_envelope = None
 
         return incoming_envelope
 
     def _wait_for_response(self):
         """
-        Waits for first message on message queue.
+        Waits for first message on message queue.s
         Will retry as many times as specified in self.max_retry.
         Waits self.timeout seconds between retries.
 
@@ -112,6 +116,8 @@ class Conversation(Thread):
                 incoming_envelope = None
 
             if not incoming_envelope or not self._is_envelope_valid(incoming_envelope):
+                incoming_envelope = None
+            elif incoming_envelope.message.message_type_id not in self._valid_incoming_message_types:
                 incoming_envelope = None
 
         return incoming_envelope

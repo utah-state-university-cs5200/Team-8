@@ -13,13 +13,15 @@ class TCPListener(Listener):
         while self.alive:
             try:
                 conn, addr = self.sock.accept()
-                while self.alive:
+                incoming_data = True
+                while incoming_data:
                     data = conn.recv(1024)
                     if data:
                         envelope = Envelope(message=data, address=addr)
                         self.dispatchEnvelope(envelope)
+                        self.incoming_data = False
                     else:
-                        break
+                        time.sleep(THREAD_SLEEP_TIME)
                 conn.close()
             except socket.timeout:
                 time.sleep(THREAD_SLEEP_TIME)

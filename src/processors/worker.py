@@ -17,7 +17,8 @@ class Worker(Thread):
     Jobs themselves are dictionaries by convention, in the form of:
     job = {
             'id': id_num,
-            'payload': ['param1', 'param2',..., 'paramN']
+            'args': ['param1', 'param2',..., 'paramN']
+            'kwargs': {'key1': 'value1,...,'keyN': 'valueN'}
     }
     Where the payload is a list of parameters to be passed into the function
     """
@@ -45,7 +46,7 @@ class Worker(Thread):
     def _doWork(self, job):
         try:
             method = self.job_map[job['id']]
-            method(*job['payload'])
+            method(*job['args'], **job['kwargs'])
         except KeyError:
             raise WorkerException("Error: Job not defined for this worker type.")
 

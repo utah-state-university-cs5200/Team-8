@@ -30,7 +30,13 @@ class Worker(Thread):
         self._initJobMap()
 
     def _initJobMap(self):
-        self.job_map = {}
+        """
+        Specializations will need to implement a map of job_ids -> functions to run
+
+        ex.
+        self.job_map = {job_id1: self.doFoo, job_id2: self.master.doBar}
+        """
+        raise NotImplementedError
 
     def run(self):
         while self.alive:

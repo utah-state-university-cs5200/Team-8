@@ -21,7 +21,7 @@ class TestMessageFactory(unittest.TestCase):
 
         :return:
         """
-        id_vals = {'message_id':2, 'sender_id':1}
+        id_vals = {'message_id':2, 'sender_id':1, 'conversation_id': 1}
         m1 = MessageFactory.build(message_type_id=MESSAGE_ID_HELLO, player_alias="Test Alias", **id_vals)
         self.assertEqual(m1.getAttributes()["message_type_id"], MESSAGE_ID_HELLO)
         self.assertEqual(m1.getAttributes()["player_alias"], "Test Alias")

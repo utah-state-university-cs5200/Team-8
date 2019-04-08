@@ -1,3 +1,3 @@
 THREAD_SLEEP_TIME = 0.05 # in seconds
-SOCKET_TIMEOUT = 0.05 # in seconds
+SOCKET_TIMEOUT = 0.5 # in seconds
 DEFAULT_SERVER_ADDRESS = ('127.0.0.1', 7777)

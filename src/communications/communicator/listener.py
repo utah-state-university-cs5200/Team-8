@@ -29,4 +29,4 @@ class Listener(Thread):
         self.sock.close()
 
     def dispatchEnvelope(self, envelope):
-        self.dispatcher.processEnvelope(envelope)
+        self.dispatcher.process(envelope)

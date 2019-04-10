@@ -11,6 +11,7 @@ class PlayerClient(Thread):
     def __init__(self, group=None, target=None, name=None, *args, **kwargs):
         super().__init__(group, target, name, args, kwargs)
         # TODO: should have some sort of UI object to get some of these values from the user
+        self.player_id = 0
         self._initServerAddresses()
         self._initConversations()
         self._initDispatcher()

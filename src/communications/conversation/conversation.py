@@ -62,6 +62,9 @@ class Conversation(Thread):
         else:
             print('Invalid incoming envelope')
 
+    def createJob(self, job_id, *args, **kwargs):
+        return {'id': job_id, 'args': args, 'kwargs': kwargs}
+
     def _do_reliable_request(self, outgoing_envelope):
         """
         Implements the Reliable Request (RR) messaging protocol.

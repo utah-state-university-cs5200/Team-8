@@ -35,3 +35,6 @@ class PlayerClient(Thread):
     def cleanup(self):
         self.udp_communicator.cleanup()
         self.tcp_communicator.cleanup()
+
+    def setID(self, id):
+        self.player_id = id

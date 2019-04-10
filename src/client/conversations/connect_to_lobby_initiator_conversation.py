@@ -6,6 +6,9 @@ from src.communications.messages.message_exception import MessageException
 
 
 # Concrete implementation of InitiatorConversation
+from src.processors.worker import JOB_CLIENT_ASSIGN_ID
+
+
 class ConnectToLobbyInitiatorConversation(InitiatorConversation):
     def __init__(self, conversation_id, remote_endpoint, *args, **kwargs):
         super().__init__(conversation_id, remote_endpoint, *args, **kwargs)
@@ -23,8 +26,8 @@ class ConnectToLobbyInitiatorConversation(InitiatorConversation):
     def _process_valid_response(self, envelope):
         # 1) Validate game server responded with AssignID
         if envelope and envelope.message.message_type_id == MESSAGE_ID_ASSIGN_ID:
-            # TODO: process the AssignID message
-            pass
+            job = self.createJob(JOB_CLIENT_ASSIGN_ID, envelope.message.player_id)
+            self.worker.process(job)
         else:
             self._possible_state = PossibleState.FAILED
 

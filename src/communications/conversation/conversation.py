@@ -7,7 +7,7 @@ from threading import Thread
 from src.communications.communicator.udp.udp_communicator import UDPCommunicator
 from src.communications.conversation.envelope import Envelope
 
-DEFAULT_TIMEOUT = 30
+DEFAULT_TIMEOUT = .5
 DEFAULT_MAX_RETRY = 3
 
 

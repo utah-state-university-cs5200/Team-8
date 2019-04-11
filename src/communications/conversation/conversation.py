@@ -90,6 +90,7 @@ class Conversation(Thread):
     def _initComSystem(self):
         self.com_system = None
         self.com_system = UDPCommunicator(address=self.remote_endpoint, dispatcher=self)
+        # print('init com in convo parent', self.com_system.sock)
 
     def _initWorker(self, kwargs):
         try:
@@ -111,4 +112,6 @@ class Conversation(Thread):
 
     def cleanup(self):
         self._alive = False
+        # print('trying to clean coms')
+        # print(self.com_system)
         self.com_system.cleanup()

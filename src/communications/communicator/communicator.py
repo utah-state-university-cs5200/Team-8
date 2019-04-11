@@ -74,5 +74,8 @@ class Communicator:
 
         :return:
         """
+        # print('in coms clean up function')
         self.alive = False
+        # print(self.sock)
+        # print(self.alive)
         self.sock.close()

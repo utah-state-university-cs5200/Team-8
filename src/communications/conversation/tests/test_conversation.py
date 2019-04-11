@@ -106,7 +106,6 @@ class TestConversation(unittest.TestCase):
 
         conversation_dict.cleanup()
 
-    @unittest.skip('message factory error')
     def testConversationWithDictionary(self):
         conversation_id = 6666
         remote_endpoint = ('172.0.0.10', 9999)

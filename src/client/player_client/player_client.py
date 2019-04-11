@@ -4,13 +4,14 @@ from src.communications.communicator.tcp.tcp_communicator import TCPCommunicator
 from src.communications.communicator.udp.udp_communicator import UDPCommunicator
 from src.communications.conversation.conversation_dictionary import ConversationDictionary
 from src.client.conversations.conversation_factory import ConversationFactory
-from src.server.dispatcher import Dispatcher
+from src.processors.dispatcher import Dispatcher
 
 
 class PlayerClient(Thread):
     def __init__(self, group=None, target=None, name=None, *args, **kwargs):
         super().__init__(group, target, name, args, kwargs)
         # TODO: should have some sort of UI object to get some of these values from the user
+        self.player_id = 0
         self._initServerAddresses()
         self._initConversations()
         self._initDispatcher()
@@ -35,3 +36,6 @@ class PlayerClient(Thread):
     def cleanup(self):
         self.udp_communicator.cleanup()
         self.tcp_communicator.cleanup()
+
+    def setID(self, id):
+        self.player_id = id

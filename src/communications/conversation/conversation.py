@@ -7,7 +7,7 @@ from threading import Thread
 from src.communications.communicator.udp.udp_communicator import UDPCommunicator
 from src.communications.conversation.envelope import Envelope
 
-DEFAULT_TIMEOUT = 30
+DEFAULT_TIMEOUT = .5
 DEFAULT_MAX_RETRY = 3
 
 
@@ -36,6 +36,8 @@ class Conversation(Thread):
         self.timeout = None
         self.max_retry = None
 
+        self._initComSystem()
+        self._initWorker(kwargs)
         self._init_timeout(kwargs)
         self._init_max_retry(kwargs)
 
@@ -59,6 +61,9 @@ class Conversation(Thread):
             self._incoming_messages.put(envelope)
         else:
             print('Invalid incoming envelope')
+
+    def createJob(self, job_id, *args, **kwargs):
+        return {'id': job_id, 'args': args, 'kwargs': kwargs}
 
     def _do_reliable_request(self, outgoing_envelope):
         """
@@ -138,6 +143,12 @@ class Conversation(Thread):
             return True
         else:
             return False
+
+    def _initWorker(self, kwargs):
+        try:
+            self.worker = kwargs['worker']
+        except KeyError:
+            self.worker = None
 
     def _init_max_retry(self, kwargs):
         try:

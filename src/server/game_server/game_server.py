@@ -4,7 +4,7 @@ from src.communications.communicator.tcp.tcp_listener import TCPListener
 from src.communications.communicator.udp.udp_listener import UDPListener
 from src.communications.conversation.conversation_dictionary import ConversationDictionary
 from src.communications.conversation.conversation_factory import ConversationFactory
-from src.server.dispatcher import Dispatcher
+from src.processors.dispatcher import Dispatcher
 from src.server.game_server.constants import DEFAULT_GAME_SERVER_UDP_ADDRESS, DEFAULT_GAME_SERVER_TCP_ADDRESS
 
 

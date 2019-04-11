@@ -18,9 +18,10 @@ class TestConversation(unittest.TestCase):
     def tearDown(self):
         pass
 
-    @unittest.skip('keyerror with message factory')
     def testConversationFactory(self):
         conversation_id = 6666
+        message_id = 1
+        sender_id = 0
         remote_endpoint = ('172.0.0.10', 9999)
         timeout = 1
         max_retry = 5
@@ -31,12 +32,16 @@ class TestConversation(unittest.TestCase):
 
         client_conversation_factory = ConversationFactory()
 
-        hello_initiator_conversation = client_conversation_factory.build(conversation_type_id=HELLO_INITIATOR_CONVERSATION,
-                                                                         conversation_id=conversation_id,
-                                                                         remote_endpoint=remote_endpoint,
-                                                                         player_alias="my alias",
-                                                                         timeout=timeout,
-                                                                         max_retry=max_retry)
+        hello_initiator_conversation = client_conversation_factory.build(
+                conversation_type_id=HELLO_INITIATOR_CONVERSATION,
+                conversation_id=conversation_id,
+                message_id=message_id,
+                sender_id=sender_id,
+                remote_endpoint=remote_endpoint,
+                player_alias="my alias",
+                timeout=timeout,
+                max_retry=max_retry
+                )
 
         hello_initiator_conversation.start()
         time.sleep(1)

@@ -58,6 +58,9 @@ class Conversation(Thread):
 
     def _is_envelope_valid(self, envelope):
         if envelope and type(Envelope()) == type(envelope):
+            # has_message = communications.messages in str(type(envelope.message).__bases__[0])
+            # has_address = len(envelope.address) ==2
+            # if has_message and has_address:
             if envelope.message and envelope.address :
                 return True
         return False

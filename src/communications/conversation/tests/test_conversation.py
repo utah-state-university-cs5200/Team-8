@@ -35,6 +35,7 @@ class TestConversation(unittest.TestCase):
         time.sleep(1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_HELLO,
+                                       conversation_id=0,
                                        message_id=1,
                                        sender_id=2,
                                        player_alias="my alias")
@@ -118,6 +119,7 @@ class TestConversation(unittest.TestCase):
         time.sleep(1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_HELLO,
+                                       conversation_id=0,
                                        message_id=1,
                                        sender_id=2,
                                        player_alias="my alias")

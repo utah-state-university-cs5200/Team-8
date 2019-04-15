@@ -14,6 +14,7 @@ class JoinGameInitiatorConversation(InitiatorConversation):
     def _create_first_message(self, kwargs):
         try:
             return MessageFactory.build(message_type_id=MESSAGE_ID_JOIN_GAME,
+                                        conversation_id=self.conversation_id,
                                         message_id=kwargs['message_id'],
                                         sender_id=kwargs['sender_id'],
                                         game_id=kwargs['game_id'],
@@ -33,6 +34,7 @@ class JoinGameInitiatorConversation(InitiatorConversation):
         # 2) Request GetGameState from game server
         # TODO: The endpoint for this message should be the game server not lobby (the endpoint of the conversation)
         game_state_message = MessageFactory.build(message_type_id=MESSAGE_ID_GET_GAME_STATE,
+                                                  conversation_id=self.conversation_id,
                                                   message_id=0,
                                                   sender_id=0)
         envelope = self._do_reliable_request(game_state_message)

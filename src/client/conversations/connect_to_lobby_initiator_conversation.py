@@ -17,6 +17,7 @@ class ConnectToLobbyInitiatorConversation(InitiatorConversation):
     def _create_first_message(self, kwargs):
         try:
             return MessageFactory.build(message_type_id=MESSAGE_ID_HELLO,
+                                        conversation_id=self.conversation_id,
                                         message_id=kwargs['message_id'],
                                         sender_id=kwargs['sender_id'],
                                         player_alias=kwargs['player_alias'])
@@ -26,8 +27,9 @@ class ConnectToLobbyInitiatorConversation(InitiatorConversation):
     def _process_valid_response(self, envelope):
         # 1) Validate game server responded with AssignID
         if envelope and envelope.message.message_type_id == MESSAGE_ID_ASSIGN_ID:
-            job = self.createJob(JOB_CLIENT_ASSIGN_ID, envelope.message.player_id)
-            self.worker.process(job)
+            if self.worker:
+                job = self.createJob(JOB_CLIENT_ASSIGN_ID, envelope.message.player_id)
+                self.worker.process(job)
         else:
             self._possible_state = PossibleState.FAILED
 
@@ -40,6 +42,7 @@ class ConnectToLobbyInitiatorConversation(InitiatorConversation):
 
         while self.is_alive():
             refresh_game_list_message = MessageFactory.build(message_type_id=MESSAGE_ID_REFRESH_GAME_LIST,
+                                                             conversation_id=self.conversation_id,
                                                              message_id=1,
                                                              sender_id=1)
             envelope = self._do_reliable_request(refresh_game_list_message)

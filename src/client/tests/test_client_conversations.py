@@ -125,6 +125,7 @@ class TestClientConversations(unittest.TestCase):
         time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_ASSIGN_ID,
+                                       conversation_id=0,
                                        message_id=2,
                                        sender_id=2,
                                        request_id=0,
@@ -135,6 +136,7 @@ class TestClientConversations(unittest.TestCase):
         time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_GAME_LIST,
+                                       conversation_id=0,
                                        message_id=2,
                                        sender_id=2,
                                        request_id=0,
@@ -164,6 +166,7 @@ class TestClientConversations(unittest.TestCase):
         time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_CONTACT_ALERT,
+                                       conversation_id=0,
                                        message_id=2,
                                        sender_id=2,
                                        request_id=0,
@@ -192,6 +195,7 @@ class TestClientConversations(unittest.TestCase):
         time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_GAME_SERVER_DEF,
+                                       conversation_id=0,
                                        message_id=2,
                                        sender_id=2,
                                        request_id=0,
@@ -202,6 +206,7 @@ class TestClientConversations(unittest.TestCase):
         time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_GAME_STATE,
+                                       conversation_id=0,
                                        message_id=2,
                                        sender_id=2,
                                        request_id=0,
@@ -227,6 +232,7 @@ class TestClientConversations(unittest.TestCase):
         time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_GAME_SERVER_DEF,
+                                       conversation_id=0,
                                        message_id=2,
                                        sender_id=2,
                                        request_id=0,
@@ -237,6 +243,7 @@ class TestClientConversations(unittest.TestCase):
         time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_GAME_STATE,
+                                       conversation_id=0,
                                        message_id=2,
                                        sender_id=2,
                                        request_id=0,
@@ -264,6 +271,7 @@ class TestClientConversations(unittest.TestCase):
         time.sleep(.1)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_ACK,
+                                       conversation_id=0,
                                        message_id=2,
                                        sender_id=2,
                                        request_id=0,
@@ -291,6 +299,7 @@ class TestClientConversations(unittest.TestCase):
         time.sleep(.2)
         # Fake an incoming message from the dispatcher
         message = MessageFactory.build(message_type_id=MESSAGE_ID_ACK,
+                                       conversation_id=0,
                                        message_id=2,
                                        sender_id=2,
                                        request_id=0,
@@ -303,6 +312,7 @@ class TestClientConversations(unittest.TestCase):
 
     def testBlockContactResponderConversation(self):
         message = MessageFactory.build(message_type_id=MESSAGE_ID_CONTACT_ALERT,
+                                       conversation_id=0,
                                        message_id=1,
                                        sender_id=2,
                                        clue_id=1)

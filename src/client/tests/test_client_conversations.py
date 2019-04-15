@@ -1,8 +1,6 @@
 import time
 import unittest
 
-from unittest.mock import Mock
-
 from src.client.conversations.constants import *
 from src.client.conversations.conversation_factory import ConversationFactory
 

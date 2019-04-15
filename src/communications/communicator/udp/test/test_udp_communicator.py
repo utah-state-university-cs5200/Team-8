@@ -18,12 +18,21 @@ class TestUDPCommunicator(unittest.TestCase):
 
         udp_communicator = UDPCommunicator(dispatcher=mock_dispatcher, address=server_address)
 
-        id_vals = {'message_id':2, 'sender_id':1, 'conversation_id':0}
-        m1 = MessageFactory.build(message_type_id=MESSAGE_ID_HELLO, player_alias="Test Alias", **id_vals)
+        id_vals = {'message_id':2, 'sender_id':1, 'conversation_id':1}
+        m1 = MessageFactory.build(
+            message_type_id=MESSAGE_ID_HELLO,
+            player_alias="Test Alias",
+            **id_vals
+            )
         udp_communicator.sendMessage(m1)
 
         time.sleep(.5)
-        self.assertEqual(m1.getAttributes(), decode(mock_dispatcher.received[0].message).getAttributes())
+        self.assertEqual(
+            m1.getAttributes(),
+            decode(
+                mock_dispatcher.received[0].message
+                ).getAttributes()
+            )
 
         udp_communicator.cleanup()
         udp_listener.cleanup()

@@ -17,19 +17,25 @@ class TestConversation(unittest.TestCase):
         pass
 
     def testConversationFactory(self):
-        conversation_id = 1111
+        conversation_id = 6666
+        message_id = 1
+        sender_id = 0
+        remote_endpoint = ('172.0.0.10', 9999)
         timeout = 1
         max_retry = 5
 
-        remote_endpoint = ('172.0.0.10', 6000)
-        hello_initiator_conversation = self.client_conversation_factory.build(conversation_type_id=HELLO_INITIATOR_CONVERSATION,
-                                                                              conversation_id=conversation_id,
-                                                                              remote_endpoint=remote_endpoint,
-                                                                              player_alias="my alias",
-                                                                              message_id=1,
-                                                                              sender_id=2,
-                                                                              timeout=timeout,
-                                                                              max_retry=max_retry)
+        client_conversation_factory = ConversationFactory()
+
+        hello_initiator_conversation = client_conversation_factory.build(
+                conversation_type_id=HELLO_INITIATOR_CONVERSATION,
+                conversation_id=conversation_id,
+                message_id=message_id,
+                sender_id=sender_id,
+                remote_endpoint=remote_endpoint,
+                player_alias="my alias",
+                timeout=timeout,
+                max_retry=max_retry
+                )
 
         hello_initiator_conversation.start()
         time.sleep(1)
@@ -47,6 +53,7 @@ class TestConversation(unittest.TestCase):
         self.assertEqual(hello_initiator_conversation.max_retry, max_retry)
 
         hello_initiator_conversation.cleanup()
+
 
     def testConversationDictionary(self):
         class TestConv:

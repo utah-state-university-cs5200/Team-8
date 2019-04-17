@@ -2,27 +2,30 @@ from src.communications.conversation.conversation import Conversation
 from src.communications.conversation.envelope import Envelope
 
 
-# Abstract class
-#   you need to implement the following methods
-#       _execute_details
-#       _create_first_message
 class InitiatorConversation(Conversation):
+    """
+    Parent class must be specialized
+
+    :note: Specializations must implement _create_first_message() and _process_valid_response()
+    """
     def __init__(self, conversation_id, remote_endpoint, *args, **kwargs):
-        super().__init__(conversation_id, remote_endpoint, *args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.first_envelop = None
+        self.conversation_id = conversation_id
+        self.remote_endpoint = remote_endpoint
 
         first_message = self._create_first_message(kwargs)
-        self.first_envelop = Envelope(message=first_message, address=self.remote_endpoint)
+        self.first_envelope = Envelope(message=first_message, address=self.remote_endpoint)
 
     def _execute_details(self):
-        envelope = self._do_reliable_request(self.first_envelop)
+        envelope = self._do_reliable_request(self.first_envelope)
 
         if not envelope:
-            print('no response :(')
+            pass
         else:
             self._process_valid_response(envelope)
 
-    def _create_first_message(self):
+    def _create_first_message(self, kwargs):
         raise NotImplementedError
 
     def _process_valid_response(self, envelope):

@@ -5,6 +5,7 @@ from src.communications.communicator.udp.udp_communicator import UDPCommunicator
 from src.communications.conversation.conversation_dictionary import ConversationDictionary
 from src.client.conversations.conversation_factory import ConversationFactory
 from src.processors.dispatcher import Dispatcher
+from src.client.player_client.gui import LobbyWindow
 
 
 class PlayerClient(Thread):
@@ -16,6 +17,11 @@ class PlayerClient(Thread):
         self._initConversations()
         self._initDispatcher()
         self._initCommunicators()
+        self._initGUI()
+
+    def _initGUI(self):
+        self.gui_object = LobbyWindow()
+
 
     def _initServerAddresses(self):
         self.serverUDPAddress = ('127.0.0.1', 7777)

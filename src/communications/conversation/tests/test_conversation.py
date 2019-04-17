@@ -1,54 +1,59 @@
 import time
 import unittest
 
-from unittest.mock import Mock
-
-from src.communications.conversation.constants import *
 from src.communications.conversation.envelope import Envelope
-from src.communications.conversation.conversation_factory import ConversationFactory
 from src.communications.conversation.conversation_dictionary import ConversationDictionary
-
-from src.communications.communicator.udp.udp_communicator import UDPCommunicator
+from src.communications.conversation.tests.constants import *
+from src.communications.conversation.tests.conversation_factory import ConversationFactory
+from src.communications.messages.constants import MESSAGE_ID_HELLO
+from src.communications.messages.message_factory import MessageFactory
 
 
 class TestConversation(unittest.TestCase):
     def setUp(self):
-        pass
+        self.client_conversation_factory = ConversationFactory()
 
     def tearDown(self):
         pass
 
     def testConversationFactory(self):
         conversation_id = 6666
+        message_id = 1
+        sender_id = 0
         remote_endpoint = ('172.0.0.10', 9999)
         timeout = 1
         max_retry = 5
 
-        mock_client = Mock()
-        mock_client.alive = True
-        mock_client.enqueueTask = lambda message: message
-
         client_conversation_factory = ConversationFactory()
 
-        hello_initiator_conversation = client_conversation_factory.build(conversation_type_id=HELLO_INITIATOR_CONVERSATION,
-                                                                         conversation_id=conversation_id,
-                                                                         remote_endpoint=remote_endpoint,
-                                                                         player_alias="my alias",
-                                                                         timeout=timeout,
-                                                                         max_retry=max_retry)
+        hello_initiator_conversation = client_conversation_factory.build(
+                conversation_type_id=HELLO_INITIATOR_CONVERSATION,
+                conversation_id=conversation_id,
+                message_id=message_id,
+                sender_id=sender_id,
+                remote_endpoint=remote_endpoint,
+                player_alias="my alias",
+                timeout=timeout,
+                max_retry=max_retry
+                )
 
         hello_initiator_conversation.start()
         time.sleep(1)
         # Fake an incoming message from the dispatcher
-        hello_initiator_conversation.process(Envelope(message='Hello World', address=('192.0.0.1', 4444)))
+        message = MessageFactory.build(message_type_id=MESSAGE_ID_HELLO,
+                                       conversation_id=0,
+                                       message_id=1,
+                                       sender_id=2,
+                                       player_alias="my alias")
+        hello_initiator_conversation.process(Envelope(message=message, address=('192.0.0.1', 4444)))
 
         self.assertEqual(hello_initiator_conversation.conversation_id, conversation_id)
         self.assertEqual(hello_initiator_conversation.remote_endpoint, remote_endpoint)
         self.assertEqual(hello_initiator_conversation.timeout, timeout)
         self.assertEqual(hello_initiator_conversation.max_retry, max_retry)
 
-        mock_client.alive = False
         hello_initiator_conversation.cleanup()
+
 
     def testConversationDictionary(self):
         class TestConv:
@@ -101,17 +106,12 @@ class TestConversation(unittest.TestCase):
 
     def testConversationWithDictionary(self):
         conversation_id = 6666
-        remote_endpoint = ('172.0.0.10', 9999)
         timeout = 1
 
-        mock_client = Mock()
-        mock_client.alive = True
-        mock_client.enqueueTask = lambda message: message
-
         conversation_dict = ConversationDictionary()
-        client_conversation_factory = ConversationFactory()
 
-        hello_initiator_conversation = client_conversation_factory.build(
+        remote_endpoint = ('172.0.0.10', 6001)
+        hello_initiator_conversation = self.client_conversation_factory.build(
             conversation_type_id=HELLO_INITIATOR_CONVERSATION,
             conversation_id=conversation_id,
             remote_endpoint=remote_endpoint,
@@ -125,12 +125,15 @@ class TestConversation(unittest.TestCase):
 
         time.sleep(1)
         # Fake an incoming message from the dispatcher
-        hello_initiator_conversation.process(Envelope(message='Hello World', address=('192.0.0.1', 4444)))
+        message = MessageFactory.build(message_type_id=MESSAGE_ID_HELLO,
+                                       conversation_id=0,
+                                       message_id=1,
+                                       sender_id=2,
+                                       player_alias="my alias")
+        hello_initiator_conversation.process(Envelope(message=message, address=('192.0.0.1', 4445)))
 
         time.sleep(5)
 
         self.assertEqual(conversation_dict.get(hello_initiator_conversation.conversation_id), None)
 
-        mock_client.alive = False
-        hello_initiator_conversation.cleanup()
         conversation_dict.cleanup()

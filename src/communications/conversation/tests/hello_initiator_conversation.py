@@ -8,10 +8,14 @@ from src.communications.messages.message_exception import MessageException
 class HelloConversation(InitiatorConversation):
     def __init__(self, conversation_id, remote_endpoint, *args, **kwargs):
         super().__init__(conversation_id, remote_endpoint, *args, **kwargs)
+        self._valid_incoming_message_types = {MESSAGE_ID_HELLO}
 
     def _create_first_message(self, kwargs):
         try:
             return MessageFactory.build(message_type_id=MESSAGE_ID_HELLO,
+                                        conversation_id=self.conversation_id,
+                                        message_id=kwargs['message_id'],
+                                        sender_id=kwargs['sender_id'],
                                         player_alias=kwargs['player_alias'])
         except KeyError or MessageException:
             return None

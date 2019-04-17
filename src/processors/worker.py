@@ -7,6 +7,8 @@ from src.processors.constants import WORKER_SLEEP_TIME
 class WorkerException(Exception):
     pass
 
+JOB_CLIENT_ASSIGN_ID = 1
+
 
 class Worker(Thread):
     """

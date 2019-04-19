@@ -141,6 +141,9 @@ class LobbyWindow:
         game_name = self.lobby_listbox.get(self.lobby_listbox.curselection()[0])
         game = self.listbox_options[game_name]
         # TODO: call function to join game with game_id
+        self.top.destroy()
+        game_object = GamePlayWindow()
+        game_object.run()
 
 
 class GamePlayWindow:
@@ -184,6 +187,7 @@ class GamePlayWindow:
         self.hint_display_frame = Frame(self.hint_large_frame)
         self.hint_display_label = Label(self.hint_display_frame, text="Current Hint Phrases")
         self.hint_listbox = Listbox(self.hint_display_frame, selectmode=SINGLE)
+        self.hint_listbox.bind('<<ListboxSelect>>', self.hint_select)
         self.hint_display_label.pack()
         self.hint_listbox.pack()
         self.hint_display_frame.grid(row=0, column=0)
@@ -193,7 +197,6 @@ class GamePlayWindow:
         self.hint_full_label = Label(self.hint_full_frame, textvariable=self.hint_full_var)
         self.hint_contact_button = Button(self.hint_full_frame, text="Contact", command=self.make_contact)
         self.hint_full_label.pack()
-        self.hint_contact_button.pack()
 
         self.new_hint_button = Button(self.hint_full_frame, text="New Hint", command=self.show_new_hint)
         self.new_hint_button.pack()
@@ -222,8 +225,26 @@ class GamePlayWindow:
             self.update_current_word()
         # TODO: else the word is already fully shown, so we need to start game on new word
 
+    def hint_select(self, e):
+        hint = self.hint_listbox.get(self.hint_listbox.curselection()[0])
+        self.hint_full_var.set(hint)
+        self.new_hint_button.pack_forget()
+        self.hint_contact_button.pack()
+        self.hint_full_frame.grid(row=0, column=2)
 
     def make_contact(self):
+
+        self.contact_guess_label = Label(self.hint_full_frame, text="Guess: ")
+        self.contact_guess_submit = Button(self.hint_full_frame, text="Submit", command=self.submit_contact)
+        self.hint_contact_button.pack_forget()
+        self.hint_full_label.pack_forget()
+
+
+        self.new_hint_button.pack()
+
+
+    def submit_contact(self):
+
         pass
 
     def show_new_hint(self):
@@ -240,7 +261,6 @@ class GamePlayWindow:
         self.new_hint_submit.pack_forget()
         self.game_data['hints'].append(self.new_hint_entry.get())
 
-        self.hint_contact_button.pack()
         self.new_hint_button.pack()
         self.hint_full_frame.grid(row=0, column=2)
 
@@ -251,22 +271,5 @@ class GamePlayWindow:
         self.top.mainloop()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-test = GamePlayWindow()
+test = LobbyWindow()
 test.run()

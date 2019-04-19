@@ -150,6 +150,11 @@ class GamePlayWindow:
         self.top.title("Contact")
         self.top.geometry("640x400")
         self._init_player_ui()
+        self.game_data = {
+            'game_name': 'Default Game',
+            'secret_word': "",
+            'secret_word_pos': 1,
+            'hints': []}
 
     def _init_player_ui(self):
         self.title_frame = Frame(self.top)
@@ -197,10 +202,25 @@ class GamePlayWindow:
 
         self.hint_large_frame.pack()
 
-
-
     def submit_secret_word(self):
-        pass
+        self.game_data['secret_word'] = self.secret_word_entry.get()
+        self.update_current_word()
+
+    def update_current_word(self):
+        self.current_word_var.set(self.game_data['secret_word'][:self.game_data['secret_word_pos']])
+
+    def update_hint_listbox(self):
+        self.hint_listbox.delete(0, END)
+        count = 1
+        for hint in self.game_data['hints']:
+            self.hint_listbox.insert(count, hint)
+            count += 1
+
+    def move_hidden_letter(self):
+        if self.game_data['secret_word_pos'] <= len(self.game_data['secret_word']):
+            self.game_data['secret_word_pos'] += 1
+            self.update_current_word()
+        # TODO: else the word is already fully shown, so we need to start game on new word
 
 
     def make_contact(self):
@@ -215,15 +235,16 @@ class GamePlayWindow:
         self.new_hint_submit.pack()
 
 
-
     def submit_new_hint(self):
         self.new_hint_entry.pack_forget()
         self.new_hint_submit.pack_forget()
-        # TODO: process new hint
+        self.game_data['hints'].append(self.new_hint_entry.get())
+
         self.hint_contact_button.pack()
         self.new_hint_button.pack()
         self.hint_full_frame.grid(row=0, column=2)
-        pass
+
+        self.update_hint_listbox()
 
     def run(self):
 

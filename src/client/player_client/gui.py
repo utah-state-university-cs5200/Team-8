@@ -20,15 +20,16 @@ class LobbyWindow:
         self.top = Tk()
         self.top.title("Contact Lobby")
         self.top.geometry("640x400")
+        self._init_username()
+        self._init_lobby_interface()
 
 
     def run(self):
-        self.username()
-        self.lobby_interface()
+
         self.update_listbox()
         self.top.mainloop()
 
-    def username(self):
+    def _init_username(self):
         """Enter username elements"""
 
         self.title_frame = Frame(self.top)
@@ -45,11 +46,11 @@ class LobbyWindow:
         self.username_button.pack(side=LEFT)
         self.username_frame.pack(side=TOP)
 
-    def lobby_interface(self):
+    def _init_lobby_interface(self):
         """initialize the lobby elements"""
 
 
-        self.create_game_button = Button(self.top, text="Create Game", command=self.create_game_init)
+        self.create_game_button = Button(self.top, text="Create Game", command=self._init_create_game)
         self.create_game_button.pack()
 
         self.list_frame = Frame(self.top)
@@ -88,7 +89,7 @@ class LobbyWindow:
 
 
 
-    def create_game_init(self):
+    def _init_create_game(self):
         """Swap out widgets for game creation widgets"""
         # TODO if the button is clicked multiple times it will keep adding things below, need to check if still there
         self.join_frame.pack_forget()
@@ -148,6 +149,81 @@ class GamePlayWindow:
         self.top = Tk()
         self.top.title("Contact")
         self.top.geometry("640x400")
+        self._init_player_ui()
+
+    def _init_player_ui(self):
+        self.title_frame = Frame(self.top)
+        self.title_label = Label(self.title_frame, text="Contact Game", font=('Helvetica', '24'))
+        self.title_label.pack()
+        self.title_frame.pack()
+
+        self.secret_keeper_frame = Frame(self.top)
+        self.secret_word_label = Label(self.secret_keeper_frame, text="Enter Secret Word: ")
+        self.secret_word_entry = Entry(self.secret_keeper_frame)
+        self.secret_word_submit = Button(self.secret_keeper_frame, text="Submit", command=self.submit_secret_word)
+        self.secret_word_label.pack(side=LEFT)
+        self.secret_word_entry.pack(side=LEFT)
+        self.secret_word_submit.pack(side=RIGHT)
+        self.secret_keeper_frame.pack()
+
+        self.current_word_display_frame = Frame(self.top)
+        self.current_word_label = Label(self.current_word_display_frame, text="Word: ", font=('Helvetica', '18'))
+        self.current_word_var = StringVar()
+        self.current_word_display = Label(self.current_word_display_frame, textvariable=self.current_word_var, font=('Helvetica', '18'))
+        self.current_word_label.pack(side=LEFT)
+        self.current_word_display.pack(side=LEFT)
+        self.current_word_display_frame.pack()
+
+        self.hint_large_frame = Frame(self.top)
+
+        self.hint_display_frame = Frame(self.hint_large_frame)
+        self.hint_display_label = Label(self.hint_display_frame, text="Current Hint Phrases")
+        self.hint_listbox = Listbox(self.hint_display_frame, selectmode=SINGLE)
+        self.hint_display_label.pack()
+        self.hint_listbox.pack()
+        self.hint_display_frame.grid(row=0, column=0)
+
+        self.hint_full_frame = Frame(self.hint_large_frame)
+        self.hint_full_var = StringVar()
+        self.hint_full_label = Label(self.hint_full_frame, textvariable=self.hint_full_var)
+        self.hint_contact_button = Button(self.hint_full_frame, text="Contact", command=self.make_contact)
+        self.hint_full_label.pack()
+        self.hint_contact_button.pack()
+
+        self.new_hint_button = Button(self.hint_full_frame, text="New Hint", command=self.show_new_hint)
+        self.new_hint_button.pack()
+
+        self.hint_full_frame.grid(row=0, column=2)
+
+        self.hint_large_frame.pack()
+
+
+
+    def submit_secret_word(self):
+        pass
+
+
+    def make_contact(self):
+        pass
+
+    def show_new_hint(self):
+        self.new_hint_button.pack_forget()
+        self.hint_contact_button.pack_forget()
+        self.new_hint_entry = Entry(self.hint_full_frame)
+        self.new_hint_submit = Button(self.hint_full_frame, text="Submit Hint", command=self.submit_new_hint)
+        self.new_hint_entry.pack()
+        self.new_hint_submit.pack()
+
+
+
+    def submit_new_hint(self):
+        self.new_hint_entry.pack_forget()
+        self.new_hint_submit.pack_forget()
+        # TODO: process new hint
+        self.hint_contact_button.pack()
+        self.new_hint_button.pack()
+        self.hint_full_frame.grid(row=0, column=2)
+        pass
 
     def run(self):
 
@@ -169,5 +245,7 @@ class GamePlayWindow:
 
 
 
-test = LobbyWindow()
+
+
+test = GamePlayWindow()
 test.run()
